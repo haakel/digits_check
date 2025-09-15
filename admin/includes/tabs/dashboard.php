@@ -66,7 +66,7 @@ function digits_settings_dashboard()
                         <?php esc_attr_e('melipayamak login', 'digits'); ?>
                     </div>
                 </a>
-                <a href="https://melipayamak.com/lab/digits/" target="_blank">
+                <a href="https://melipayamak.com/lab/digits-plugin" target="_blank">
                     <div class="dig_admin_dashboard_button">
                         <span class="dig_admin_dashboard_ic dig_admin_dashboard_doc"></span>
                         <?php esc_attr_e('Documentation', 'digits'); ?>

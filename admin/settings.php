@@ -67,7 +67,7 @@ function digit_admin_header_logo($show_update = true)
     }
     ?>
 <span class="dig-display_inline">
-    <a href="https://melipayamak.com/lab/digits/" target="_blank">
+    <a href="https://melipayamak.com/lab/digits-plugin" target="_blank">
         <img src="<?php echo digits_logo_uri(); ?>" class="digits_admin_logo" />
     </a>
     <a href="https://melipayamak.com/" target="_blank">
@@ -554,7 +554,7 @@ function digits_add_admin_settings_scripts($hook)
             'digits-login-script',
         ), digits_version(), true);
 
-        $gateway_help = 'https://melipayamak.com/lab/digits/';
+        $gateway_help = 'https://melipayamak.com/lab/digits-plugin';
         $settings_array = array(
             'plsActMessage' => __('Please activate your plugin to change the look and feel of your Login page and Popup', 'digits'),
             'cannotUseEmailWithoutPass' => __('Oops! You cannot enable email without password for login', 'digits'),
@@ -757,10 +757,22 @@ add_action('dmp_uo_digits', 'dig_dmp_trigger');
 
 function digits_settings_tab_ui()
 {
-    $addons_tab = array(
-        'addons' => array('label' => esc_attr__('All Addons', 'digits')),
-    );
+    //add by melipayamak
+    
+    // $addons_tab = array(
+    //     'addons' => array('label' => esc_attr__('All Addons', 'digits')),
+    // );
     $addons_tab = apply_filters('digits_admin_addon_tab', $addons_tab);
+    
+if (empty($addons_tab)) {
+    $addons_tab['no_addons'] = array(
+        'label' => esc_attr__('No active addons', 'digits'),
+        'content' => '<div class="digits-no-addons-message">'
+            . '<p>' . esc_html__('No addons are currently active.', 'digits') . '</p>'
+            . '</div>'
+    );
+}
+    
     return array(
         'authentication' => array(
             'label' => esc_attr__('Authentication', 'digits'),

@@ -261,7 +261,7 @@ msgstr "Comprar ahora"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "Está utilizando la versión de prueba de Digits, registre el complemento con "
@@ -1073,12 +1073,12 @@ msgid "Testing Site"
 msgstr "Sitio de prueba"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "Código de compra"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "Código de compra"
 
 #: admin/includes/functions.php:1057
@@ -1092,7 +1092,7 @@ msgstr "Ingrese su código de compra para recibir actualizaciones automáticas."
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1104,7 +1104,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2578,7 +2578,7 @@ msgstr "Cómo usar Elementor"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s Haga clic aquí%s para ver cómo encontrar el código de compra"
 
 #: admin/obw/obw.php:116
@@ -2858,7 +2858,7 @@ msgstr ""
 "complemento"
 
 #: admin/obw/obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "Introduce tu código de compra"
 
 #: admin/obw/obw.php:538
@@ -2985,7 +2985,7 @@ msgstr "Solicitud"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr ""
 "En caso de que esté utilizando el mismo código de compra en su servidor de "
@@ -3040,7 +3040,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "¡ID de remitente msg91 no válido!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "Código de Compra Inválido"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3150,7 +3150,7 @@ msgstr "COMPLEMENTOS"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "Introduce un código de compra válido."
 
 #: dig_addons/addons.php:236
@@ -5770,7 +5770,7 @@ msgid "Search"
 msgstr "Buscar"
 
 #: includes/core/phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "Por favor ingrese un código de compra válido"
 
 #: includes/core/phandler.php:56
@@ -14337,7 +14337,7 @@ msgstr ""
 #: includes/wcs.php:267
 #, fuzzy
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>Dígitos:</b> Registre los dígitos con el código de compra para habilitar "

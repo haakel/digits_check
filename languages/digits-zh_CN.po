@@ -262,7 +262,7 @@ msgstr "立即购买"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "您使用的是 Digits 的试用版，请使用购买代码注册插件，或者购买许可证以使用该插"
@@ -1057,12 +1057,12 @@ msgid "Testing Site"
 msgstr "测试现场"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "购买代码"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "购买代码"
 
 #: admin/includes/functions.php:1057
@@ -1076,7 +1076,7 @@ msgstr "请激活您的插件以接收更新"
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1086,7 +1086,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2482,7 +2482,7 @@ msgstr "如何使用元素"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s单击此处%s查看如何查找购买代码"
 
 #: admin/obw/obw.php:116
@@ -2743,7 +2743,7 @@ msgid "This wizard will guide you through the setup process of this plugin"
 msgstr "此向导将指导您完成此插件的设置过程"
 
 #: admin/obw/obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "输入您的购买代码"
 
 #: admin/obw/obw.php:538
@@ -2858,7 +2858,7 @@ msgstr "请求"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr "如果您在测试/生产服务器上使用相同的购买代码，请确保请求插件域。"
 
@@ -2905,7 +2905,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "无效的 msg91 发件人 id!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "无效的购买代码"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3009,7 +3009,7 @@ msgstr "插件"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "请输入有效的购买代码。"
 
 #: dig_addons/addons.php:236
@@ -5470,7 +5470,7 @@ msgid "Search"
 msgstr "搜索"
 
 #: includes/core/phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "请输入一个有效购买代码"
 
 #: includes/core/phandler.php:56
@@ -14163,7 +14163,7 @@ msgstr "可能的原因：您的主机可能禁用了mail()函数。"
 
 #: includes/wcs.php:267
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>Digits：</b> 请用购买代码注册Digits以启用自动更新。 请点击<a href=\""

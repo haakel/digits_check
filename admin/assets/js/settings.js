@@ -470,7 +470,29 @@ jQuery(function () {
     });
 
     if (jQuery.fn.mask) {
-        jQuery('.digits_purchase_code').mask('AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA');
+        var maskInput = true
+        var isDigitsMask = true;
+        jQuery(".digits_purchase_code").on('keydown', function() {
+            update_digits_purchase_code_mask(jQuery(this));
+        });
+        
+        function update_digits_purchase_code_mask(inp){
+            var value = inp.val();
+            if (value.toLowerCase().startsWith('digits')) {
+                if(!isDigitsMask || maskInput) {
+                    inp.mask('AAAAAA-AAAA-AAAA-AAAA-AAAA-AAAA-AAAA');
+                }
+                isDigitsMask = true;
+            } else {
+                if(isDigitsMask || maskInput) {
+                    inp.mask('AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA');
+                }
+                isDigitsMask = false;
+            }
+            maskInput = false
+        }
+        update_digits_purchase_code_mask(jQuery(".digits_purchase_code"));
+
     }
 
     var digit_tapp = jQuery(".digit_gateway");
@@ -667,6 +689,18 @@ function submit_form($this, silent, success_function, error_function) {
     return false;
 };
 
+    function update_manage_license_link() {
+        var code_inp = digits_setting_update.find("#dig_purchasecode");
+        if(code_inp.length) {
+            var code = code_inp.val();
+            var site_link = 'https://digits.unitedover.com/my-account/?manage-sites=true';
+            if (!code.toLowerCase().startsWith('digits')) {
+                site_link = 'https://unitedover.com/manage';
+            }
+
+            jQuery('.digits_license_manage').attr('href', site_link);
+        }
+    }
 
 
     window.digits_admin_submit = submit_form;
@@ -1475,12 +1509,20 @@ function submit_form($this, silent, success_function, error_function) {
         te = te.replace(".", "_");
 
         box.find('.dig_call_test_response').hide();
-        if (val == 1 || val == 13 || val == -1) {
+
+        if(val == 1111 || val == -1){
+            box.find(".otp_waiting_time").hide()
+        }else{
+            box.find(".otp_waiting_time").show()
+        }
+
+        if (val == 1 || val == 13 || val == -1 || val == 1111) {
             box.find(".dig_api_test").hide();
             if (val == 13) {
                 jQuery(".disotp").hide();
             }
             box.find(".dig_current_gateway").hide();
+            box.find(".digits_message_template_row").hide();
         } else {
             if (val != 900) {
                 box.find(".dig_current_gateway").show().find("span").text($this.find("option:selected").text());
@@ -1489,6 +1531,7 @@ function submit_form($this, silent, success_function, error_function) {
             }
             box.find(".dig_api_test").show();
             jQuery(".disotp").show();
+            box.find(".digits_message_template_row").show();
         }
 
         digit_tapp.find('option').each(function (index, element) {

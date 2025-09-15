@@ -109,7 +109,7 @@ class Wizard
             ],
             'activate_plugin' => [
                 'renderer' => 'activate_plugin',
-                'hint_text' => sprintf(__('%sClick here%s to see how to find the purchase code', 'digits'), '<a href="' . esc_attr($find_code_link) . '" target="_blank">', '</a>'),
+                'hint_text' => sprintf(__('%sClick here%s to see how to find the license key', 'digits'), '<a href="' . esc_attr($find_code_link) . '" target="_blank">', '</a>'),
                 'show_next' => true
             ],
             'gateway_selector' => [
@@ -519,13 +519,13 @@ class Wizard
         <form autocomplete="off" class="wiz_process_purchase_code">
             <div class="untdor_wizard_center untdor_wizard_fields">
                 <div class="untdor_wizard_input_row">
-                    <label><?php esc_attr_e('Enter your purchase code', 'digits'); ?></label>
+                    <label><?php esc_attr_e('Enter your license key', 'digits'); ?></label>
                     <input type="text"
                            autocomplete="off"
                            data-purchase_code="1"
                            nocop="1"
                            id="digits_wizard_purchase_code"
-                           placeholder="<?php esc_attr_e('Purchase Code', 'digits'); ?>"
+                           placeholder="<?php esc_attr_e('License Key', 'digits'); ?>"
                            required="required"
                            class="digits_purchase_code" name="digits_purchase_code"
                            value="<?php echo esc_attr($code) ?>"

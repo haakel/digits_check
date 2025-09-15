@@ -63,6 +63,7 @@ function digits_update_data($gs)
 
 
     $data = array(
+        'digits_shield',
         'digits_brute_force_protection',
         'dig_reg_verify_email',
         'digits_sameorigin_protection',
@@ -819,7 +820,7 @@ function digit_addons($active_tab)
     if (empty($data)) {
 
         ?>
-<div class="dig_addons_coming_soon"><?php _e('Unexpected error occured while getting addons', 'digits'); ?></div>
+<div class="dig_addons_coming_soon"><?php _e('Unexpected error occurred while getting addons', 'digits'); ?></div>
 
 <?php
         return;
@@ -1033,13 +1034,13 @@ function digit_activation()
             echo 'style="display:block;"';
         } ?>>
         <div>
-            <label for="dig_purchasecode"><?php _e("Purchase code", "digits"); ?> </label>
+            <label for="dig_purchasecode"><?php _e("License Key", "digits"); ?> </label>
         </div>
         <div class="dig_purchase_code_inp">
             <div class="digits_shortcode_tbs digits_shortcode_stb">
                 <input class="dig_inp_wid31 dig_sens_data digits_purchase_code" nocop="1" type="text"
                     name="dig_purchasecode" id="dig_purchasecode" data-purchase_code="1"
-                    placeholder="<?php _e("Purchase Code", "digits"); ?>" autocomplete="off"
+                    placeholder="<?php _e("License Key", "digits"); ?>" autocomplete="off"
                     value="<?php echo esc_attr($code) ?>" readonly>
                 <button class="button dig_btn_unregister" type="button"><?php _e('DEREGISTER', 'digits'); ?></button>
                 <img class="dig_prc_ver"
@@ -1076,25 +1077,29 @@ function digit_activation()
                 <p class="dig_ecr_desc dig_cntr_algn dig_sme_lft_algn request_live_server_addition" <?php if ($license_type == 1) {
                         echo 'style="display:none;"';
                     } ?>>
-                    <?php _e('If you want to use the same purchase code on your production server, you can now manage your license code through our License Manager.', 'digits'); ?>
+                    <?php _e('If you want to use the same license key on your production server, you can now manage your license code through our License Manager.', 'digits'); ?>
                 </p>
                 <p class="dig_ecr_desc dig_cntr_algn dig_sme_lft_algn request_testing_server_addition" <?php if ($license_type == 2) {
                         echo 'style="display:none;"';
                     } ?>>
-                    <?php _e('If you want to use the same purchase code on your testing server, you can now manage your license code through our License Manager.', 'digits'); ?>
+                    <?php _e('If you want to use the same license key on your testing server, you can now manage your license code through our License Manager.', 'digits'); ?>
                 </p>
             </td>
         </tr>
         <tr>
             <td>
-                <button href="https://unitedover.com/manage"
-                    class="button dig_request_server_addition request_live_server_addition" type="button" <?php if ($license_type == 1) {
-                        echo 'style="display:none;"';
-                    } ?>><?php esc_attr_e('License Manager', 'digits'); ?></button>
-                <button href="https://unitedover.com/manage"
-                    class="button dig_request_server_addition request_testing_server_addition" type="button" <?php if ($license_type == 2) {
-                        echo 'style="display:none;"';
-                    } ?>><?php esc_attr_e('License Manager', 'digits'); ?></button>
+                <?php
+                    $manage_link = 'https://digits.unitedover.com/my-account/?manage-sites=true';
+                    if (!empty($code)) {
+
+                        if (!str_starts_with(strtolower($code), "digits")) {
+                            $manage_link = 'https://unitedover.com/manage';
+                        }
+                    }
+                    ?>
+                <button href="<?php echo esc_attr($manage_link); ?>"
+                    class="button dig_request_server_addition digits_license_manage"
+                    type="button"><?php esc_attr_e('License Manager', 'digits'); ?></button>
             </td>
         </tr>
     </table>

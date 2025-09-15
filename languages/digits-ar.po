@@ -265,7 +265,7 @@ msgstr "اشتري الآن"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "أنت تستخدم إصدارا تجريبيا من Digits ، يرجى تسجيل المكون الإضافي باستخدام رمز "
@@ -1107,12 +1107,12 @@ msgid "Testing Site"
 msgstr "موقع الاختبار"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "كود الشراء"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "كود الشراء"
 
 #: admin/includes/functions.php:1057
@@ -1128,7 +1128,7 @@ msgstr "يرجى تنشيط المكون الإضافي الخاص بك لتلق
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1139,7 +1139,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2635,7 +2635,7 @@ msgstr "كيفية استخدام إليمنتور"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s انقر هنا %s لمعرفة كيفية العثور على رمز الشراء"
 
 #: admin/obw/obw.php:116
@@ -2905,7 +2905,7 @@ msgid "This wizard will guide you through the setup process of this plugin"
 msgstr "سيرشدك هذا المعالج خلال عملية إعداد هذا المكون الإضافي"
 
 #: admin/obw/obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "أدخل كود الشراء الخاص بك"
 
 #: admin/obw/obw.php:538
@@ -3029,7 +3029,7 @@ msgstr "طلب"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr ""
 "في حال كنت تستخدم نفس رمز الشراء على خادم الاختبار / الإنتاج الخاص بك ، "
@@ -3085,7 +3085,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "معرف المرسل msg91 غير صالح!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "کد لایسنس اشتباه است"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3199,7 +3199,7 @@ msgstr "الإضافات"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "الرجاء إدخال رمز شراء صالح."
 
 #: dig_addons/addons.php:236
@@ -5831,7 +5831,7 @@ msgstr "بحث"
 
 #: includes/core/phandler.php:46
 #, fuzzy
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "يرجى إدخال رمز شراء صحيح"
 
 #: includes/core/phandler.php:56
@@ -14990,7 +14990,7 @@ msgstr "قد يكون العطل فى المضيف الخاص ببريدك ال�
 #: includes/wcs.php:267
 #, fuzzy
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>ارقام:</b> يرجى تسجيل الأرقام مع رمز الشراء لتمكين التحديثات التلقائية. "

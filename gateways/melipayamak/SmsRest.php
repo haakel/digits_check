@@ -38,7 +38,7 @@ class SmsRest extends BaseSms
 		return $this->execute($url,$data);
 
 	}
-
+	
 	public function BaseServiceNumber( $text, $to, $bodyId) {
 		$url = $this->getPath(self::PATH, 'BaseServiceNumber');
 		
@@ -81,23 +81,27 @@ class SmsRest extends BaseSms
 		curl_setopt($handle, CURLOPT_POSTFIELDS, $fields_string);
 
 
- $response = curl_exec($handle);
-    $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-    $curl_errno = curl_errno($handle);
-    $curl_error = curl_error($handle);
+		$response     = curl_exec($handle);
 
-    if ($curl_errno) {
-        throw new Exception($curl_error);
+		$code         = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
+		$curl_errno   = curl_errno($handle);
+
+		$curl_error   = curl_error($handle);
+
+		if ($curl_errno) {
+
+			throw new Exception($curl_error);
     }
 
     // فرض می‌کنیم پاسخ به صورت JSON است
     $decodedResponse = json_decode($response, true);
     if (json_last_error() === JSON_ERROR_NONE) {
         return $decodedResponse;
-    }
+		}
 
     // اگر JSON نبود، پاسخ خام را برمی‌گرداند
-    return $response;
+		return $response;
 
 
 	}

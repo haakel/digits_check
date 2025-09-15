@@ -12,6 +12,7 @@ final class DigitsSessions
     const TABLE_PREFIX = 'digits_user_session';
     const USER_SESSION = 'd_user_session';
     protected static $_instance = null;
+    static $data = [];
 
     public function __construct()
     {
@@ -23,6 +24,10 @@ final class DigitsSessions
 
     public static function get($key)
     {
+        if(!empty(self::$data[$key])) {
+            return self::$data[$key];
+        }
+
         $session = self::get_token();
         if (empty($session)) {
             return false;
@@ -176,6 +181,12 @@ final class DigitsSessions
 
     public static function set($key, $value, $expiry_time, $identifier = false)
     {
+        if (is_object($value) || is_array($value)) {
+            $value = json_encode($value);
+        }
+
+        self::$data[$key] = $value;
+
         $session = self::get_token();
 
         return self::set_session_value($session, $key, $value, $expiry_time, $identifier);
@@ -187,10 +198,6 @@ final class DigitsSessions
             return false;
         }
 
-        if (is_object($value) || is_array($value)) {
-            $value = json_encode($value);
-        }
-
         global $wpdb;
         $table = self::get_table_name();
         $data = array('session_token' => $session);
@@ -199,9 +206,9 @@ final class DigitsSessions
         $data['data_value'] = $value;
 
         if (!empty($expiry_time)) {
-            $data['session_expiry'] = date("Y-m-d H:i:s", time() + $expiry_time);
+            $data['session_expiry'] = gmdate("Y-m-d H:i:s", time() + $expiry_time);
         }
-        $data['time'] = date("Y-m-d H:i:s", time());
+        $data['time'] = gmdate("Y-m-d H:i:s", time());
 
         if (!empty($identifier)) {
             $data['identifier_id'] = $identifier;

@@ -27,9 +27,54 @@ function digit_whatsapp_message($countrycode, $mobile, $otp, $dig_messagetemplat
     $option_slug = 'digit';
     $messagetemplate = $dig_messagetemplate;
 
-    $whatsapp_gateway = get_option('digit_whatsapp_gateway', -1);
+    $whatsapp_gateway = get_option('digit_whatsapp_gateway', digits_default_whatsapp_gateway());
     $prefix = 'whatsapp';
     switch ($whatsapp_gateway) {
+        case 1111:
+            $whatsapp_info = \DigitsSessions::get(\DigitsFormHandler\Handler::WHATSAPP_VERIFY_KEY);
+            $whatsapp_info = json_decode($whatsapp_info, true);
+
+            if(empty($whatsapp_info)){
+                return false;
+            }
+            $site_data = [
+                'country_code' => $countrycode,
+                'mobile' => $mobile,
+                'otp' => $otp,
+                'site_name' => get_bloginfo('name'),
+                'site_url' => get_site_url(),
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'wp_version' => get_bloginfo('version'),
+                'admin_email' => get_bloginfo('admin_email'),
+                'home_url' => home_url(),
+                'plugin_version' => digits_version(),
+                'user_ip' => digits_get_ip(),
+                'locale' => get_locale()
+            ];
+            $data = array_merge($whatsapp_info, $site_data);
+
+            $digpc = dig_get_option('dig_purchasecode');
+            if(!empty($digpc)){
+                $data['code'] = $digpc;
+            }
+
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_URL, "https://beacon.unitedover.com/api/whatsapp/process/verify.php");
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+            $response = curl_exec($ch);
+
+            $response = json_decode($response, true);
+            \DigitsFormHandler\Handler::set_whatsapp_response_obj($response);
+
+            curl_close($ch);
+            return true;
         default:
             return apply_filters('unitedover_send_whatsapp_message', false, $option_slug, $whatsapp_gateway, $countrycode, $mobile, $messagetemplate, $testCall);
     }
@@ -46,13 +91,6 @@ function digit_send_message($digit_gateway, $countrycode, $mobile, $otp, $dig_me
     $gateway_id = $digit_gateway;
     $messagetemplate = $dig_messagetemplate;
 
-    if (!$testCall) {
-        $debug = apply_filters('digits_debug', false);
-        if ($debug) {
-            return true;
-        }
-    }
-
     if (in_array(str_replace('+', '', $countrycode), array('242', '225'))) {
         if (substr($mobile, 0, 1) != '0') {
             $mobile = '0' . $mobile;
@@ -63,6 +101,14 @@ function digit_send_message($digit_gateway, $countrycode, $mobile, $otp, $dig_me
     if ($whatsapp) {
         return digit_whatsapp_message($countrycode, $mobile, $otp, $dig_messagetemplate, $testCall);
     }
+
+    if (!$testCall) {
+        $debug = apply_filters('digits_debug', false);
+        if ($debug) {
+            return true;
+        }
+    }
+
 
     switch ($digit_gateway) {
         case 2:
@@ -116,7 +162,7 @@ function digit_send_message($digit_gateway, $countrycode, $mobile, $otp, $dig_me
             if (empty($msg91route)) {
                 $msg91route = 2;
             }
-            $message = urlencode($dig_messagetemplate);
+            $message = trim($dig_messagetemplate);
 
             if ($msg91route == 1) {
 
@@ -693,19 +739,19 @@ function digit_send_message($digit_gateway, $countrycode, $mobile, $otp, $dig_me
             }
 
             return true;
-            case 16:
-                $melipayamak = get_option('digit_melipayamak');
-                
-                $username = $melipayamak['username'];
-                $password = $melipayamak['password'];
-                $from = $melipayamak['from'];
+        case 16:
+            $melipayamak = get_option('digit_melipayamak');
+
+            $username = $melipayamak['username'];
+            $password = $melipayamak['password'];
+            $from = $melipayamak['from'];
                 $khadamati = $melipayamak['khadamati'];
                 $international = $melipayamak['international'];
                 $international_text = $melipayamak['international_text'];
                 $text = $dig_messagetemplate;
                 $bodyId = $melipayamak['bodyId'];
-                $api = new MelipayamakApi($username, $password);
-                $sms = $api->sms();
+            $api = new MelipayamakApi($username, $password);
+            $sms = $api->sms();
                 $to = $countrycode . $mobile;
             
                 $international_text = str_replace("#OTP#", $otp, $international_text);
@@ -758,7 +804,7 @@ function digit_send_message($digit_gateway, $countrycode, $mobile, $otp, $dig_me
                         }
                     }
             
-                    if ($testCall) {
+            if ($testCall) {
                         $value = is_array($result) && isset($result['Value']) ? $result['Value'] : 'Unknown';
                         $strRetStatus = is_array($result) && isset($result['StrRetStatus']) ? $result['StrRetStatus'] : 'No Status';
             
@@ -1107,12 +1153,12 @@ $data = json_encode($data);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 }
 
-if(!empty($data)) {
+if (!empty($data)) {
 $str_data = $data;
-if(is_array($str_data)){
+if (is_array($str_data)) {
 $str_data = implode(" ", $str_data);
 }
-if(is_string($str_data)) {
+if (is_string($str_data)) {
 $http_headers = str_replace('{content-length}', strlen($str_data), $http_headers);
 }
 }

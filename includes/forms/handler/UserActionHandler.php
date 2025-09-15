@@ -22,6 +22,9 @@ UserActionHandler::instance();
 final class UserActionHandler
 {
     const available_methods = ['direct_email_login', 'verify_email', 'setup_auth_device', 'remote_device_auth'];
+
+    const MAX_WAITING_TIME = 300;
+
     protected static $_instance = null;
 
     public function __construct()
@@ -35,6 +38,86 @@ final class UserActionHandler
 
         add_action('wp_ajax_digits_user_remote_action', [$this, 'user_action']);
         add_action('wp_ajax_nopriv_digits_user_remote_action', [$this, 'user_action']);
+
+        add_action('wp_ajax_nopriv_digits_verify_whatsapp_phone', [$this, 'verify_whatsapp_phone']);;
+    }
+
+    /**
+     * @param $request_token
+     * @return WP_User
+     */
+    public static function get_user_from_email_token($request_token)
+    {
+        $token_info = \DigitsSessions::get(Handler::EMAIL_VERIFY_PROCESS_KEY);
+        $token_info = json_decode($token_info, true);
+
+        $validate = self::instance()->validate_token($token_info, $request_token);
+
+        if ($validate instanceof WP_Error) {
+            wp_send_json_error(['message' => $validate->get_error_message()]);
+        }
+
+        $user_email = $token_info['email'];
+        return get_user_by('email', $user_email);
+    }
+
+    public function verify_whatsapp_phone()
+    {
+        $country_code = $_REQUEST['country_code'];
+        $phone = $_REQUEST['phone_no'];
+
+        $request_token = $_REQUEST['token'];
+        $request_key = $_REQUEST['key'];
+
+        $token_details = \DigitsSessions::get_from_identifier($request_key, true);
+
+        if (empty($request_key)) {
+            die();
+        }
+
+        $validate = self::instance()->validate_token($token_details, $request_token);
+
+        if ($validate instanceof WP_Error) {
+            wp_send_json_error(['message' => $validate->get_error_message()]);
+        }
+
+
+        if ($token_details != 'pending') {
+            wp_send_json_error(['message' => 'Error, token is not pending']);;
+        }
+
+        $token_details['status'] = 'approved';
+        \DigitsSessions::update_identifier_value($request_key, $token_details);
+
+        wp_send_json_success(['message' => 'done']);
+    }
+
+    public function validate_token($token_info, $request_token)
+    {
+
+        if (empty($token_info)) {
+            return new WP_Error('error', __('This link has expired, Please try again!', 'digits'));
+        }
+
+        $token = $token_info['token'];
+
+        $generation_time = $token_info['time'];
+        if ($token != $request_token || time() - $generation_time > self::MAX_WAITING_TIME) {
+            return new WP_Error('error', __('Email approval link has expired, Please try again!', 'digits'));
+        }
+
+        return true;
+    }
+
+    /**
+     *  Constructor.
+     */
+    public static function instance()
+    {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
     }
 
     public function resend_verification_email()
@@ -61,53 +144,6 @@ final class UserActionHandler
         wp_send_json_success(['message' => __('Please check your email for the verification link to verify the account.', 'digits')]);
     }
 
-    /**
-     * @param $request_token
-     * @return WP_User
-     */
-    public static function get_user_from_email_token($request_token)
-    {
-        $token_info = \DigitsSessions::get(Handler::EMAIL_VERIFY_PROCESS_KEY);
-        $token_info = json_decode($token_info, true);
-
-        $validate = self::instance()->validate_token($token_info, $request_token);
-
-        if ($validate instanceof WP_Error) {
-            wp_send_json_error(['message' => $validate->get_error_message()]);
-        }
-
-        $user_email = $token_info['email'];
-        return get_user_by('email', $user_email);
-    }
-
-    public function validate_token($token_info, $request_token)
-    {
-
-        if (empty($token_info)) {
-            return new WP_Error('error', __('This link has expired, Please try again!', 'digits'));
-        }
-
-        $token = $token_info['token'];
-
-        $generation_time = $token_info['time'];
-        if ($token != $request_token || time() - $generation_time > 600) {
-            return new WP_Error('error', __('Email approval link has expired, Please try again!', 'digits'));
-        }
-
-        return true;
-    }
-
-    /**
-     *  Constructor.
-     */
-    public static function instance()
-    {
-        if (is_null(self::$_instance)) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
-
     public function user_action()
     {
         $method = $this->get_var('method', true);
@@ -125,63 +161,6 @@ final class UserActionHandler
             $this->process_remote_auth_login($auth_key, $auth_token);
         }
 
-    }
-
-    public function check_remote_auth_token($token_info)
-    {
-        if (empty($token_info)) {
-            wp_send_json_error(array("message" => __('Session expired, please try logging in again!', 'digits')));
-        }
-
-        $token_info = json_decode($token_info, true);
-
-        if (empty($token_info)) {
-            wp_send_json_error(array("message" => __('Error please try again!', 'digits')));
-        }
-
-        if ($token_info['status'] != Handler::REMOTE_DEVICE_AUTH_PENDING_STATUS) {
-            wp_send_json_error(array("message" => __('You have already logged in via this QR Code!', 'digits')));
-        }
-        return $token_info;
-    }
-
-    public function process_remote_auth_login($auth_key, $auth_token)
-    {
-        try {
-            $data = array();
-
-            $token_info = \DigitsSessions::get_from_identifier($auth_token);
-            $token_info = $this->check_remote_auth_token($token_info);
-
-            $user_id = $token_info['user_id'];
-            $step_no = $token_info['step_no'];
-
-            $user = get_user_by('ID', $user_id);
-
-
-            Handler::instance()->check_remote_auth_available($user_id, true);
-
-
-            if (!empty($_REQUEST['cred'])) {
-                $auth_cred = $_REQUEST['cred'];
-                $validate = DigitsDeviceAuth::authenticate_user_device($user, $step_no, $auth_cred);
-                if ($validate instanceof WP_Error) {
-                    throw new Exception($validate->get_error_message());
-                }
-                $token_info['status'] = 'completed';
-                \DigitsSessions::update_identifier_value($auth_token, $token_info);
-
-                wp_send_json_success(['message' => __('Device authentication successful!', 'digits')]);
-
-            }
-
-            $data['token'] = Handler::instance()->generate_platform_token($user, $step_no, 'platform');
-
-            $data['process_remote_auth_login'] = true;
-            wp_send_json_success($data);
-        } catch (Exception $e) {
-            wp_send_json_error(['message' => $e->getMessage()]);
-        }
     }
 
     public function get_var($name, $required)
@@ -365,7 +344,7 @@ final class UserActionHandler
                 if (md5($email) == $request_key) {
 
                     self::user_email_verified($user_id, $email);
-                    
+
                     $data = array();
                     $data['message'] = __('Thank you for verifiying your email!', 'digits');
                     $data['redirect'] = home_url();
@@ -378,11 +357,69 @@ final class UserActionHandler
 
     }
 
-    public static function user_email_verified($user_id,$email){
+    public static function user_email_verified($user_id, $email)
+    {
         update_user_meta($user_id, UserRegistration::USER_VERIFIED_EMAIL, $email);
 
         delete_user_meta($user_id, UserRegistration::USER_VERIFY_EMAIL_KEY);
         delete_user_meta($user_id, UserRegistration::USER_VERIFY_EMAIL_KEY_GEN_TIME);
 
+    }
+
+    public function process_remote_auth_login($auth_key, $auth_token)
+    {
+        try {
+            $data = array();
+
+            $token_info = \DigitsSessions::get_from_identifier($auth_token);
+            $token_info = $this->check_remote_auth_token($token_info);
+
+            $user_id = $token_info['user_id'];
+            $step_no = $token_info['step_no'];
+
+            $user = get_user_by('ID', $user_id);
+
+
+            Handler::instance()->check_remote_auth_available($user_id, true);
+
+
+            if (!empty($_REQUEST['cred'])) {
+                $auth_cred = $_REQUEST['cred'];
+                $validate = DigitsDeviceAuth::authenticate_user_device($user, $step_no, $auth_cred);
+                if ($validate instanceof WP_Error) {
+                    throw new Exception($validate->get_error_message());
+                }
+                $token_info['status'] = 'completed';
+                \DigitsSessions::update_identifier_value($auth_token, $token_info);
+
+                wp_send_json_success(['message' => __('Device authentication successful!', 'digits')]);
+
+            }
+
+            $data['token'] = Handler::instance()->generate_platform_token($user, $step_no, 'platform');
+
+            $data['process_remote_auth_login'] = true;
+            wp_send_json_success($data);
+        } catch (Exception $e) {
+            wp_send_json_error(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function check_remote_auth_token($token_info)
+    {
+        if (empty($token_info)) {
+            wp_send_json_error(array("message" => __('Session expired, please try logging in again!', 'digits')));
+        }
+
+        $token_info = json_decode($token_info, true);
+
+        if (empty($token_info)) {
+            wp_send_json_error(array("message" => __('Error please try again!', 'digits')));
+        }
+
+        if ($token_info['status'] != Handler::REMOTE_DEVICE_AUTH_PENDING_STATUS) {
+            wp_send_json_error(array("message" => __('You have already logged in via this QR Code!', 'digits')));
+        }
+        return $token_info;
     }
 }

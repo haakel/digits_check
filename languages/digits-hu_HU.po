@@ -268,7 +268,7 @@ msgstr "Vedd meg most"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "A Digits próbaverzióját használja, kérjük, regisztrálja a bővítményt "
@@ -1121,12 +1121,12 @@ msgid "Testing Site"
 msgstr "Tesztelési hely"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "Beszerzési kód"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "Vásárlási kód"
 
 #: admin/includes/functions.php:1057
@@ -1142,7 +1142,7 @@ msgstr "Kérjük, aktiválja a bővítményt a frissítések fogadásához"
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1153,7 +1153,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2672,7 +2672,7 @@ msgstr "Az Elementor használata"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr ""
 "%s Kattintson ide%s hogy megtudja, hogyan találhatja meg a vásárlási kódot"
 
@@ -2954,7 +2954,7 @@ msgstr "Ez a varázsló végigvezeti Önt a bővítmény beállítási folyamat�
 
 #: admin/obw/obw.php:522
 #, fuzzy
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "Adja meg vásárlási kódját"
 
 #: admin/obw/obw.php:538
@@ -3079,7 +3079,7 @@ msgstr "Kérés"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr ""
 "Abban az esetben, ha ugyanazt a vásárlási kódot használja a tesztelési/éles "
@@ -3136,7 +3136,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "Érvénytelen msg91 feladóazonosító!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "Érvénytleen vásárlási kód"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3250,7 +3250,7 @@ msgstr "KIEGÉSZÍTŐK"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "Kérjük, adjon meg egy érvényes vásárlási kódot."
 
 #: dig_addons/addons.php:236
@@ -5980,7 +5980,7 @@ msgstr "Keresés"
 
 #: includes/core/phandler.php:46
 #, fuzzy
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "Kérjük, adjon meg egy érvényes vásárlási kódot"
 
 #: includes/core/phandler.php:56
@@ -15339,7 +15339,7 @@ msgstr ""
 #: includes/wcs.php:267
 #, fuzzy
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>Szám:</b> Kérjük, regisztráljon számjegyeket a vásárlási kóddal az "

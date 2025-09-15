@@ -43,7 +43,7 @@ function digits_modify_addons()
 
             $digpc = dig_get_option('dig_purchasecode');
             if (empty($digpc)) {
-                wp_send_json_error(array('errorMessage' => __('Please enter a valid purchase code', 'digits')));
+                wp_send_json_error(array('errorMessage' => __('Please enter a valid license key', 'digits')));
                 die();
             }
 
@@ -78,7 +78,12 @@ function digits_modify_addons()
                     $checkPurchase = dig_doCurl('https://bridge.unitedover.com/updates/?action=get_metadata&slug=' . $slug . '&license_key=' . $digpc . '&request_site=' . dig_network_home_url());
 
                     if (!isset($checkPurchase['download_url'])) {
-                        $status['errorMessage'] = __('Please purchase addon license from https://digits.unitedover.com/addons/', 'digits');
+                        $is_subscription = str_starts_with(strtolower($digpc), "digits");
+                        $error_msg = sprintf(__('To use this add-on, please update your subscription by clicking %shere%s', 'digits'), '<a href="https://digits.unitedover.com/subscribe/?update=true&utm_source=digits-wp-settings&utm_medium=addon-page" target="_blank">', '</a>');
+                        if (!$is_subscription) {
+                            $error_msg = __('Please purchase addon license from https://digits.unitedover.com/addons/', 'digits');
+                        }
+                        $status['errorMessage'] = $error_msg;
                         wp_send_json_error($status);
                     }
                     $plugin_url = 'https://bridge.unitedover.com/updates/?action=download&slug=' . $slug . '&license_key=' . $digpc . '&request_site=' . dig_network_home_url();

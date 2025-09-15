@@ -152,7 +152,7 @@ final class Secure
                 $devices = \DigitsDeviceAuth::instance()->listUserSecurityDevices($user_id);
                 foreach ($devices as $device) {
                     $device_type = $device['device_type'];
-                    $device_name = $device['device_name'];
+                    $device_name = stripslashes($device['device_name']);
                     ?>
                     <div class="digits_secure_account_item">
                         <?php

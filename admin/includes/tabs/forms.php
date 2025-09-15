@@ -17,7 +17,7 @@ function digits_settings_auth_general()
     $dig_mobile_no_placeholder = get_option('dig_mobile_no_placeholder', 1);
 
 
-    $wp_login_hide = get_option("dig_wp_login_hide", 0);
+    $wp_login_hide = get_option("dig_wp_login_hide", 1);
 
     $show_labels = get_option('dig_show_labels', 0);
 

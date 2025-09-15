@@ -20,7 +20,7 @@ jQuery(function () {
         ordering: false,
         columns: [
             {data: 'date_time'},
-            {data: 'to'},
+            {data: 'to', className: 'digits-log-to'},
             {data: 'route'},
             {data: 'action'},
             {data: 'content'},

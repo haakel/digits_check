@@ -86,7 +86,7 @@ function digits_settings_api_email()
 
 function digits_settings_api_whatsapp()
 {
-    $whatsapp_gateway = get_option('digit_whatsapp_gateway', -1);
+    $whatsapp_gateway = get_option('digit_whatsapp_gateway', digits_default_whatsapp_gateway());
 
     ?>
     <div class="dig_admin_head"><span><?php _e('WhatsApp Gateway', 'digits'); ?></span></div>
@@ -105,7 +105,7 @@ function digits_settings_api_whatsapp()
                     $dig_messagetemplate = get_option("dig_messagetemplate", digits_default_otp_template());
                     $whatsapp_messagetemplate = get_option('dig_whatsapp_messagetemplate', $dig_messagetemplate);
                     ?>
-                    <tr class="digits_whatsapp_template digits_gateway_template">
+                    <tr class="digits_whatsapp_template digits_gateway_template digits_message_template_row">
                         <th scope="row" style="vertical-align:top;"><label
                                     for="dig_whatsapp_messagetemplate"><?php _e('WhatsApp Message Template', 'digits'); ?></label>
                         </th>
@@ -141,7 +141,7 @@ function digits_otp_resend_time($type)
     $dig_mob_otp_resend_time_three = get_option($key . '_3', 120);
 
     ?>
-    <table class="form-table otp_table">
+    <table class="form-table otp_table otp_waiting_time">
 
         <tr>
             <th scope="row" style="vertical-align:top;"><label><?php _e('OTP Resend Time', 'digits'); ?></label>

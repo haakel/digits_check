@@ -7,12 +7,17 @@ if (!defined('ABSPATH')) {
 
 function digits_getEmailGateWayArray()
 {
+    $site_url = home_url();
+    $site_url = str_replace("http://", "", $site_url);
+    $site_url = str_replace("https://", "", $site_url);
+    $default_from_email = 'no-reply@' . $site_url;
+
     $gateways = array(
         'wp_mail' => array(
             'value' => 2,
             'label' => 'WP Mail',
             'inputs' => array(
-                'From Email' => array('text' => true, 'name' => 'from'),
+                'From Email' => array('text' => true, 'name' => 'from', 'default_value' => $default_from_email),
             ),
         ),
         'sendgrid' => array(
@@ -20,7 +25,7 @@ function digits_getEmailGateWayArray()
             'label' => 'SendGrid',
             'inputs' => array(
                 'API Key' => array('text' => true, 'name' => 'api_key'),
-                'From Email' => array('text' => true, 'name' => 'from'),
+                'From Email' => array('text' => true, 'name' => 'from', 'default_value' => $default_from_email),
             ),
         ),
         'mailgun' => array(
@@ -29,7 +34,7 @@ function digits_getEmailGateWayArray()
             'inputs' => array(
                 'API Key' => array('text' => true, 'name' => 'api_key'),
                 'Domain' => array('text' => true, 'name' => 'domain'),
-                'From Email' => array('text' => true, 'name' => 'from'),
+                'From Email' => array('text' => true, 'name' => 'from', 'default_value' => $default_from_email),
             ),
         ),
     );

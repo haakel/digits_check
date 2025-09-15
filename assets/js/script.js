@@ -296,6 +296,13 @@ jQuery(function ($) {
         }
     })
 
+    jQuery(document).on('click', '.digits_open_link', function (e) {
+        e.preventDefault();
+        var $this = jQuery(this).closest('.digits_secure_login_auth_wrapper');
+        if($this.find('.open_link').length){
+            window.open($this.find('.open_link').val(), '_blank');
+        }
+    })
     jQuery(document).on('click', '.digits-form_otp_selector,.digits-form_resend_otp', function (e) {
         e.preventDefault();
         var $this = jQuery(this);
@@ -359,6 +366,9 @@ jQuery(function ($) {
                         tab_body.find('input[type="text"]').focus();
                         form.find('.digits-form_submit-btn').show();
 
+                        if(html.find('.open_link').length){
+                            window.open(html.find('.open_link').val(), '_blank');
+                        }
                     }
 
                     if (data.input_info_html) {
@@ -611,12 +621,18 @@ jQuery(function ($) {
     }
 
     function update_form_footer(tab) {
-        var form_footer = tab.closest('form').find('.digits-form_footer');
+        var form = tab.closest('form');
+        var form_footer = form.find('.digits-form_footer');
         form_footer.empty();
 
         var footer_content = tab.find('.digits-form_footer_content');
         if (footer_content.length) {
             form_footer.append(footer_content.html());
+        }
+        var submit_button = form.find('.digits-form_submit-btn');
+
+        if (tab.find('.hide_submit').length) {
+            submit_button.hide();
         }
 
     }
@@ -735,6 +751,21 @@ jQuery(function ($) {
 
         forgot.find('.digits_form_back').removeClass('digits_hide_back').attr('data-show_form', login_class);
         process_view_change(forgot, forgot);
+
+        var recaptcha = forgot.find('.g-recaptcha');
+        recaptcha.empty();
+
+        var captcha_id = 'captcha_' + Math.random().toString(8).substr(2, 9);
+
+        recaptcha.attr('id', captcha_id);
+
+        var widget_id = grecaptcha.render(recaptcha.attr('id'),
+            {
+                'callback': digits_recaptcha_callback,
+                'error-callback': digits_recaptcha_error,
+            });
+        digits_form = forgot;
+
         return false;
     })
 
@@ -1189,7 +1220,9 @@ jQuery(function ($) {
                     var status = data.status;
                     if (status === 'completed') {
                         var wrapper = check_elem.closest('.digits_secure_login_auth_wrapper');
-                        if (data.verification_code) {
+                        if(data.wa_verification_code){
+                            wrapper.find('.whatsapp_otp_hidden_field').val(data.wa_verification_code);
+                        }else if (data.verification_code) {
                             wrapper.find('.otp_input:visible').val(data.verification_code);
                         } else {
                             var change_class = wrapper.data('change');

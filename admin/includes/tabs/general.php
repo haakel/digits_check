@@ -187,7 +187,7 @@ function digits_settings_woocommerce()
     $dig_reqfieldbilling = get_option("dig_reqfieldbilling", 0);
 
     $enable_wc_autofill = get_option('dig_autofill_wc_billing', 1);
-    $dig_redirect_wc_to_dig = get_option('dig_redirect_wc_to_dig', 0);
+    $dig_redirect_wc_to_dig = get_option('dig_redirect_wc_to_dig', 1);
     $enable_createcustomeronorder = get_option('enable_createcustomeronorder');
 
     ?>
@@ -397,11 +397,25 @@ function digits_settings_miscellaneous()
             <table class="form-table">
                 <tr>
                     <?php
+                    $digits_shield = get_option('digits_shield', 1);
+                    ?>
+                    <th scope="row">
+                        <label class="top-10" for="digits_shield">
+                            <?php _e('Enable Brute-Force Protection', 'digits'); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <?php digits_input_switch('digits_shield', $digits_shield); ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <?php
                     $brute_force_protection = get_option('digits_brute_force_protection', 1);
                     ?>
                     <th scope="row">
                         <label class="top-10" for="digits_brute_force_protection">
-                            <?php _e('Enable Brute Force Protection', 'digits'); ?>
+                            <?php _e('Enable Message Rate-Limiting Protection', 'digits'); ?>
                         </label>
                     </th>
                     <td>
@@ -413,7 +427,7 @@ function digits_settings_miscellaneous()
                 <tr>
                     <th scope="row" style="vertical-align:top;"><label
                                 for="brute_force_allowed_ip">
-                            <?php _e('Brute Force Allow-listed IPs', 'digits'); ?>
+                            <?php _e('Brute-Force & Rate-Limit IP Allowlist', 'digits'); ?>
                         </label></th>
                     <td>
 

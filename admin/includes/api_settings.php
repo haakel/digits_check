@@ -38,7 +38,7 @@ function digits_admin_show_notices()
             ['label' => __('Register', 'digits'), 'url' => $request_link, 'class' => 'digits_show_purchasecode'],
             ['label' => __('Buy Now', 'digits'), 'url' => $purchase_link, 'target' => '_blank'],
         ];
-        $notice_text = __('You are using trial version of Digits, please register the plugin using purchase code or else purchase a license to use the plugin with all of its features.', 'digits');
+        $notice_text = __('You are using trial version of Digits, please register the plugin using license key or else purchase a license to use the plugin with all of its features.', 'digits');
         digits_show_notice($notice_text, $notice_links, false);
     }
 
@@ -212,6 +212,7 @@ function getWhatsAppGateWayArray()
         ),
         'Twilio' => array(
             'value' => 2,
+            'require_addon' => 1,
             'inputs' =>
                 array(
                     __('Twilio Account SID') => array('text' => true, 'name' => 'account_sid'),
@@ -381,7 +382,14 @@ function getWhatsAppGateWayArray()
                 __('Namespace') => array('text' => true, 'name' => 'namespace'),
                 __('Language') => array('text' => true, 'name' => 'language'),
             ),
-        )
+        ),
+        /*'digits_official_whatsapp' => array(
+            'value' => 1111,
+            'label' => 'UnitedOver (Free)',
+            'group' => 'starting_group',
+            'inputs' => array(
+            ),
+        )*/
     );
 
     return $gateways;
@@ -642,25 +650,25 @@ function getGateWayArray()
         //         )
         // ),
 
-        // 'SMSC.ru' => array(
-        //     'value' => 21,
-        //     'inputs' =>
-        //         array(
-        //             __('Login') => array('text' => true, 'name' => 'login'),
-        //             __('Password') => array('text' => true, 'name' => 'password'),
-        //             __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
-        //         )
-        // ),
-        // 'TargetSMS' => array(
-        //     'value' => 22,
-        //     'require_addon' => 1,
-        //     'inputs' =>
-        //         array(
-        //             __('Login') => array('text' => true, 'name' => 'login'),
-        //             __('Password') => array('text' => true, 'name' => 'password'),
-        //             __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
-        //         )
-        // ),
+        'SMSC.ru' => array(
+            'value' => 21,
+            'inputs' =>
+                array(
+                    __('Login') => array('text' => true, 'name' => 'login'),
+                    __('Password') => array('text' => true, 'name' => 'password'),
+                    __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
+                )
+        ),
+        'TargetSMS' => array(
+            'value' => 22,
+            'require_addon' => 1,
+            'inputs' =>
+                array(
+                    __('Login') => array('text' => true, 'name' => 'login'),
+                    __('Password') => array('text' => true, 'name' => 'password'),
+                    __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
+                )
+        ),
 
         // 'Ghasedak' => array(
         //     'value' => 23,
@@ -947,9 +955,7 @@ function digits_api_settings()
 <?php
 }
 
-/*
- * TODO: remove iniFireBaseinit after 7.1
- * */
+
 function digit_select_gateway($gatewayAttributes, $digit_tapp = -1, $smsgateways = array(), $gateway_type = 'sms')
 {
 
@@ -974,7 +980,6 @@ function digit_select_gateway($gatewayAttributes, $digit_tapp = -1, $smsgateways
         $gatewayLabel = __('SMS Gateway', 'digits');
     }
     $gatewayName = digit_getGatewayName($digit_tapp);
-    iniFireBaseinit();
     ?>
 
 <tr>
@@ -1068,6 +1073,9 @@ function dig_show_gateway_api_fields($smsgateways, $digit_tapp, $prefix = '')
                 $inputValue = stripslashes($gatewayCreds[$input['name']]);
             } else {
                 $inputValue = '';
+            }
+            if(empty($inputValue) && !empty($input['default_value'])){
+                $inputValue = $input['default_value'];
             }
             $optional = 0;
             if (isset($input['optional'])) {
@@ -1176,6 +1184,16 @@ function digits_update_gateway_api_details($smsgateways, $prefix)
             $gatewaycred[$input['name']] = $inputValue;
 
         }
-        update_option('digit_' . $prefix . digits_strtolower($name), $gatewaycred);
+        $option_key = 'digit_' . $prefix . digits_strtolower($name);
+        if(!empty($gatewaycred)) {
+            update_option($option_key, $gatewaycred);
+        }else{
+            delete_option($option_key, $gatewaycred);
+        }
     }
+}
+
+
+function digits_default_whatsapp_gateway(){
+    return -1;
 }

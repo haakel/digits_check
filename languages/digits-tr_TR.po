@@ -262,7 +262,7 @@ msgstr "Satın Al"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "Digits'in deneme sürümünü kullanıyorsunuz, lütfen satın alma kodunu "
@@ -1086,12 +1086,12 @@ msgid "Testing Site"
 msgstr "Test Sitesi"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "Satın Alma Kodu"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "Satın Alma Kodu"
 
 #: admin/includes/functions.php:1057
@@ -1105,7 +1105,7 @@ msgstr "Güncellemeleri almak için lütfen eklentinizi etkinleştirin"
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1116,7 +1116,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2598,7 +2598,7 @@ msgstr "Elementor nasıl kullanılır"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s Satın alma kodunu nasıl bulacağınızı görmek için buraya tıklayın%s"
 
 #: admin/obw/obw.php:116
@@ -2875,7 +2875,7 @@ msgstr "Bu sihirbaz, bu eklentinin kurulum sürecinde size rehberlik edecektir."
 
 #: admin/obw/obw.php:522
 #, fuzzy
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "Satın alma kodunuzu girin"
 
 #: admin/obw/obw.php:538
@@ -3002,7 +3002,7 @@ msgstr "İstek"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr ""
 "Test/üretim sunucunuzda aynı satın alma kodunu kullanıyorsanız addon etki "
@@ -3058,7 +3058,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "Msg91 gönderici kimliği (sender id) hatalıdır!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "Geçersiz satınalma kodu"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3169,7 +3169,7 @@ msgstr "EKLER"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "Lütfen geçerli bir Satın Alma Kodu girin."
 
 #: dig_addons/addons.php:236
@@ -5828,7 +5828,7 @@ msgid "Search"
 msgstr "Arama"
 
 #: includes/core/phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "Lütfen geçerli bir satın alma kodu girin"
 
 #: includes/core/phandler.php:56
@@ -14692,7 +14692,7 @@ msgstr ""
 #: includes/wcs.php:267
 #, fuzzy
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>Basamak:</b> Otomatik güncellemeleri etkinleştirmek için lütfen rakamları "

@@ -3,7 +3,7 @@
 /*
  * Plugin Name: DIGITS: WordPress Mobile Number Signup and Login
  * Description: Expand your website dimensions by providing signup and login using mobile number. User can register themselves with just a mobile number.
- * Version: 8.4.6
+ * Version: 8.6.3
  * Plugin URI: https://www.melipayamak.com/lab/digits/
  * Author URI: https://www.melipayamak.com
  * Author: ملی پیامک
@@ -29,7 +29,7 @@ delete_site_option('dig_purchasefail');
 
 function digits_version()
 {
-    return '8.4.6';
+    return '8.6.3';
 }
 
 
@@ -1785,10 +1785,18 @@ function validate_digp_reg_fields($reg_custom_fields, $error, $captcha = true)
             $options = dig_sanitize_options($values['options']);
             if ($type == "captcha") {
                 $ses = filter_var($_POST['dig_captcha_ses'], FILTER_SANITIZE_NUMBER_FLOAT);
+
+                if(isset($_SESSION['dig_captcha' . $ses.'_time']) &&
+                (time() - $_SESSION['dig_captcha' . $ses.'_time']) > 400){
+                    unset($_SESSION['dig_captcha' . $ses]);
+                    $e_value = '';
+                }
+
                 if ($e_value != $_SESSION['dig_captcha' . $ses] && $captcha) {
                     $error->add("captcha", __('Please enter a valid Captcha!', 'digits'));
                 } else if (isset($_SESSION['dig_captcha' . $ses])) {
-                    unset($_SESSION['dig_captcha' . $ses]);
+                    $_SESSION['dig_captcha' . $ses.'_time'] = time();
+                    //unset($_SESSION['dig_captcha' . $ses]);
                 }
             } else if ($type == "tac") {
                 if ($e_value != 1 && !$e_value) {
@@ -1823,6 +1831,7 @@ function validate_digp_reg_fields($reg_custom_fields, $error, $captcha = true)
                     }
 
                     foreach ($e_value as $ev) {
+                        $ev = stripslashes($ev);
                         if (!in_array($ev, $options) && !in_array($ev, $values['options'])) {
                             $error->add("invalidValue", __('Please select a valid option!', 'digits'));
                         }

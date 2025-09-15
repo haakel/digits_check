@@ -240,7 +240,7 @@ msgstr "Mua ngay"
 
 #: admin/includes/api_settings.php:41
 msgid ""
-"You are using trial version of Digits, please register the plugin using purchase code or else "
+"You are using trial version of Digits, please register the plugin using license key or else "
 "purchase a license to use the plugin with all of its features."
 msgstr ""
 
@@ -929,11 +929,11 @@ msgid "Testing Site"
 msgstr ""
 
 #: admin/includes/functions.php:1036
-msgid "Purchase code"
+msgid "License Key"
 msgstr "Mã mua hàng"
 
 #: admin/includes/functions.php:1044 admin/includes/tabs/dashboard.php:57 admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "Mã mua hàng"
 
 #: admin/includes/functions.php:1047
@@ -946,14 +946,14 @@ msgstr "Vui lòng kích hoạt plugin của bạn để nhận cập nhật"
 
 #: admin/includes/functions.php:1083
 msgid ""
-"If you want to use same purchase code on your production site then please click the below button to "
+"If you want to use same license key on your production site then please click the below button to "
 "request for it. Our team will take less than 12 hours to respond to your request, and will notify "
 "via email."
 msgstr ""
 
 #: admin/includes/functions.php:1088
 msgid ""
-"If you want to use same purchase code on your testing site then please click the below button to "
+"If you want to use same license key on your testing site then please click the below button to "
 "request for it. Our team will take less than 12 hours to respond to your request, and will notify "
 "via email."
 msgstr ""
@@ -2184,7 +2184,7 @@ msgstr "Cách sử dụng Elementor"
 
 #: admin/obw/obw.php:112
 #, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%sNhấp vào đây%s để xem cách tìm mã mua hàng"
 
 #: admin/obw/obw.php:116
@@ -2384,7 +2384,7 @@ msgid "This wizard will guide you through the setup process of this plugin"
 msgstr "Trình hướng dẫn này sẽ hướng dẫn bạn quy trình thiết lập plugin này"
 
 #: admin/obw/obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "Nhập mã mua hàng"
 
 #: admin/obw/obw.php:538
@@ -2479,7 +2479,7 @@ msgstr "Yêu cầu"
 
 #: admin/settings.php:199
 msgid ""
-"In case you are using same purchase code on your testing/production server, then make sure to "
+"In case you are using same license key on your testing/production server, then make sure to "
 "request addon domain."
 msgstr ""
 
@@ -2524,7 +2524,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "Id người gửi msg91 không hợp lệ!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "Mã mua hàng không hợp lệ"
 
 #: admin/settings.php:540 digapprove/functions.php:166 includes/core/enqueue/enqueue_scripts.php:112
@@ -2619,7 +2619,7 @@ msgstr "THÊM"
 
 #: dig_addons/addons.php:190 dig_addons/addons.php:204 dig_addons/addons.php:222
 #: dig_addons/addons.php:247
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "Vui lòng nhập Mã mua hàng hợp lệ."
 
 #: dig_addons/addons.php:236
@@ -4906,7 +4906,7 @@ msgid "Search"
 msgstr "Tìm kiếm"
 
 #: includes/core/phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "Vui lòng nhập mã mua hàng hợp lệ"
 
 #: includes/core/phandler.php:56
@@ -13205,7 +13205,7 @@ msgstr "Lý do có thể: máy chủ của bạn có thể đã tắt chức nă
 
 #: includes/wcs.php:267
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic updates. Click <a href="
+"<b>Digits:</b> Please register digits with license key to enable automatic updates. Click <a href="
 "\""
 msgstr ""
 

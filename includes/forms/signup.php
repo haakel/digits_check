@@ -348,6 +348,16 @@ class DigitsSignupFields
                                     <?php if ($passaccep == 2) echo 'required="required"'; ?>
                                 />
                             </div>
+                            <div class="digits_password_eye-cont digits_password_eye">
+                                <svg class="digits_password_eye-open digit-eye" xmlns="http://www.w3.org/2000/svg" width="24"
+                                     height="24"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <div class="digits_password_eye-open digits_password_eye-line digits_password_eye-default-line"></div>
+                            </div>
                         </div>
                         <?php
                     }

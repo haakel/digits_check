@@ -56,12 +56,6 @@ final class ShortcodeSecureAccount
                     <?php echo esc_attr(__('Account Security Dashboard', 'digits')); ?>
                 </div>
                 <div class="digits_account_security_dashboard-body">
-                    <div class="digits_account_security_dashboard-totp_setup">
-                        <?php echo do_shortcode('[df-totp-setup]'); ?>
-                    </div>
-                    <div class="digits_account_security_dashboard-keys_setup">
-                        <?php echo do_shortcode('[df-biometrics-setup icons=1]'); ?>
-                    </div>
                     <?php
                     $available_steps = [2, 3];
                     foreach ($available_steps as $step_no) {
@@ -79,6 +73,13 @@ final class ShortcodeSecureAccount
                     }
                     ?>
                 </div>
+                <div class="digits_account_security_dashboard-keys_setup">
+                    <?php echo do_shortcode('[df-biometrics-setup icons=1]'); ?>
+                </div>
+                <div class="digits_account_security_dashboard-totp_setup">
+                    <?php echo do_shortcode('[df-totp-setup]'); ?>
+                </div>
+
                 <div class="digits_account_security_dashboard-footer">
                     <?php if (UserSettingsHandler::isUser2FaEnabled($user_id)) {
                         ?>

@@ -104,6 +104,13 @@ class UserRegistration
             $raw_mobile = $this->get($phone_key, false);
             $mobile = sanitize_mobile_field_dig($raw_mobile);
         }
+
+        if(!empty($countrycode)){
+            if ($countrycode[0] !== '+') {
+                $countrycode = '+' . $countrycode;
+            }
+        }
+
         $phone = $countrycode . $mobile;
 
 

@@ -262,7 +262,7 @@ msgstr "Koop Nu"
 #, fuzzy
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr ""
 "U gebruikt de proefversie van Digits, registreer de plug-in met behulp van "
@@ -1090,12 +1090,12 @@ msgid "Testing Site"
 msgstr "Testlocatie"
 
 #: admin/includes/functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "Aankoop Code"
 
 #: admin/includes/functions.php:1054 admin/includes/tabs/dashboard.php:57
 #: admin/obw/obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "Aankoopcode"
 
 #: admin/includes/functions.php:1057
@@ -1111,7 +1111,7 @@ msgstr "Activeer uw plug-in om updates te ontvangen"
 #: admin/includes/functions.php:1093
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 "
 "hours to respond to your request, and will notify via email."
 msgstr ""
@@ -1122,7 +1122,7 @@ msgstr ""
 #: admin/includes/functions.php:1098
 #, fuzzy
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr ""
@@ -2618,7 +2618,7 @@ msgstr "Hoe elementor te gebruiken"
 
 #: admin/obw/obw.php:112
 #, fuzzy, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s Klik hier%s om te zien hoe u de aankoopcode kunt vinden"
 
 #: admin/obw/obw.php:116
@@ -2896,7 +2896,7 @@ msgid "This wizard will guide you through the setup process of this plugin"
 msgstr "Deze wizard begeleidt u door het installatieproces van deze plug-in"
 
 #: admin/obw/obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "Voer jouw aankoopcode in"
 
 #: admin/obw/obw.php:538
@@ -3022,7 +3022,7 @@ msgstr "Aanvraag"
 #: admin/settings.php:199
 #, fuzzy
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr ""
 "Als u dezelfde aankoopcode gebruikt op uw test- / productieserver, zorg er "
@@ -3077,7 +3077,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "Ongeldige msg91 afzender-id!"
 
 #: admin/settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "Ongeldige activatie code"
 
 #: admin/settings.php:540 digapprove/functions.php:166
@@ -3191,7 +3191,7 @@ msgstr "ADDONS"
 #: dig_addons/addons.php:190 dig_addons/addons.php:204
 #: dig_addons/addons.php:222 dig_addons/addons.php:247
 #, fuzzy
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "Voer een geldige aankoopcode in."
 
 #: dig_addons/addons.php:236
@@ -5861,7 +5861,7 @@ msgid "Search"
 msgstr "Zoeken"
 
 #: includes/core/phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "Voer een geldige aankoopcode in"
 
 #: includes/core/phandler.php:56
@@ -15361,7 +15361,7 @@ msgstr "Mogelijke reden: uw host kan de mail() functie hebben uitgeschakeld."
 #: includes/wcs.php:267
 #, fuzzy
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr ""
 "<b>Cijfers:</b> Registreer cijfers met aankoopcode om automatische updates "

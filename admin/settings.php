@@ -107,11 +107,13 @@ function digits_loader()
 
 function digits_show_notice($notice, $links, $dismissible)
 {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
     ?>
 <div class="digits_admin_notice notice" style="display: flex;">
     <div class="digits_admin_notice_logo">
         <img src="<?php echo digits_logo_uri(); ?>" />
-        <img src="<?php echo melipayamak_logo_uri(); ?>" />
     </div>
     <div class="digits_admin_notice_separator"></div>
     <div class="digits_admin_notice_text">
@@ -207,7 +209,7 @@ body {
         $notice_links = [
             ['label' => __('Add Domain', 'digits'), 'url' => $request_link,'target'=>'_blank'],
         ];
-        $notice_text = __('In case you are using same purchase code on your testing/production server, then make sure to add addon domain.', 'digits');
+        $notice_text = __('In case you are using same license key on your testing/production server, then make sure to add addon domain.', 'digits');
         digits_show_notice($notice_text, $notice_links, 'dig_hid_addon_domain_notice');
     }*/
 
@@ -476,7 +478,7 @@ body {
 // add by melipayamak
 function digits_unitedover_logo()
 {
-?>
+    ?>
 <div class="a_unitedover_product_container">
     <a href="https://melipayamak.com" target="_blank">
         <img src="<?php echo get_digits_asset_uri('/assets/images/Melipayamak-logo.svg'); ?>" alt="Melipayamak Logo"
@@ -559,7 +561,7 @@ function digits_add_admin_settings_scripts($hook)
             'bothPassAndOTPCannotBeDisabled' => __('Both Password and OTP cannot be disabled', 'digits'),
             'selectatype' => __('Field Type', 'digits'),
             "Invalidmsg91senderid" => __("Invalid msg91 sender id!", 'digits'),
-            "invalidpurchasecode" => __("Invalid Purchase Code", 'digits'),
+            "invalidpurchasecode" => __("Invalid License Key", 'digits'),
             "Error" => __("Error! Please try again later", "digits"),
             "PleasecompleteyourSettings" => __("Please complete your settings", 'digits'),
             "PleasecompleteyourAPISettings" => sprintf(__("Please complete your SMS Gateway settings by clicking here, without those plugin will not work. For documentation, click %s here %s", 'digits'), '<a href="' . $gateway_help . '" target="_blank">', '</a>'),
@@ -778,7 +780,7 @@ function digits_settings_tab_ui()
                 'woocommerce' => array('label' => esc_attr__('WooCommerce', 'digits'), 'function' => 'woocommerce'),
                 'translations' => array('label' => esc_attr__('Translations', 'digits')),
                 'miscellaneous' => array('label' => esc_attr__('Miscellaneous', 'digits'), 'function' => 'miscellaneous'),
-                'recaptcha' => array('label' => esc_attr__('reCAPTCHA', 'digits'), 'function' => 'recaptcha', 'sensitive' => true),
+                'recaptcha' => array('label' => esc_attr__('CAPTCHA', 'digits'), 'function' => 'recaptcha', 'sensitive' => true),
             )
         ),
         'forms' => array(

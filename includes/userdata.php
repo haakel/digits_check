@@ -46,6 +46,10 @@ function getUserFromPhone($phone)
         return null;
     }
 
+    if ($phone[0] !== '+') {
+        $phone = '+' . $phone;
+    }
+
     global $wpdb;
 
 

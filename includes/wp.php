@@ -524,7 +524,7 @@ function dig_redirect_wc_myaccount()
     if (is_user_logged_in()) {
         return;
     }
-    $dig_redirect_wc_to_dig = get_option('dig_redirect_wc_to_dig', 0);
+    $dig_redirect_wc_to_dig = get_option('dig_redirect_wc_to_dig', 1);
 
     if ($dig_redirect_wc_to_dig == 1) {
         if (function_exists('is_account_page')) {
@@ -621,7 +621,7 @@ function digits_redirect_wp_login()
             return;
         }
 
-        $wp_login_hide = get_option("dig_wp_login_hide", 0);
+        $wp_login_hide = get_option("dig_wp_login_hide", 1);
         if ($wp_login_hide == 1) {
             $url = digits_get_login_uri('');
             wp_redirect($url);

@@ -296,7 +296,7 @@ msgstr "立即購買"
 #: admin\includes\api_settings.php:41
 msgid ""
 "You are using trial version of Digits, please register the plugin using "
-"purchase code or else purchase a license to use the plugin with all of its "
+"license key or else purchase a license to use the plugin with all of its "
 "features."
 msgstr "您使用的是 Digits 的試用版，請使用購買代碼註冊外掛程式，或者購買許可證以使用該外掛程式及其所有功能。"
 
@@ -1225,13 +1225,13 @@ msgid "Testing Site"
 msgstr "測試現場"
 
 #: admin\includes\functions.php:1046
-msgid "Purchase code"
+msgid "License Key"
 msgstr "購買代碼"
 
 #: admin\includes\functions.php:1054
 #: admin\includes\tabs\dashboard.php:57
 #: admin\obw\obw.php:528
-msgid "Purchase Code"
+msgid "License Key"
 msgstr "購買代碼"
 
 #: admin\includes\functions.php:1057
@@ -1244,14 +1244,14 @@ msgstr "請啟動您的外掛程式以接收更新"
 
 #: admin\includes\functions.php:1093
 msgid ""
-"If you want to use same purchase code on your production site then please "
+"If you want to use same license key on your production site then please "
 "click the below button to request for it. Our team will take less than 12 hours "
 "to respond to your request, and will notify via email."
 msgstr "如果您想在生產網站上使用相同的購買代碼，請按下下面的按鈕進行請求。我們的團隊將在不到 12 小時內回復您的請求，並會通過電子郵件通知。"
 
 #: admin\includes\functions.php:1098
 msgid ""
-"If you want to use same purchase code on your testing site then please click "
+"If you want to use same license key on your testing site then please click "
 "the below button to request for it. Our team will take less than 12 hours to "
 "respond to your request, and will notify via email."
 msgstr "如果您想在測試網站上使用相同的購買代碼，請按下下面的按鈕進行請求。我們的團隊將在不到 12 小時內回復您的請求，並會通過電子郵件通知。"
@@ -2642,7 +2642,7 @@ msgstr "如何使用元素"
 
 #: admin\obw\obw.php:112
 #, php-format
-msgid "%sClick here%s to see how to find the purchase code"
+msgid "%sClick here%s to see how to find the license key"
 msgstr "%s 按下此處%s查看如何尋找購買代碼"
 
 #: admin\obw\obw.php:116
@@ -2852,7 +2852,7 @@ msgid "This wizard will guide you through the setup process of this plugin"
 msgstr "此精靈將指導您完成此外掛程式的設置過程"
 
 #: admin\obw\obw.php:522
-msgid "Enter your purchase code"
+msgid "Enter your license key"
 msgstr "輸入您的購買代碼"
 
 #: admin\obw\obw.php:538
@@ -2952,7 +2952,7 @@ msgstr "請求"
 
 #: admin\settings.php:199
 msgid ""
-"In case you are using same purchase code on your testing/production server, "
+"In case you are using same license key on your testing/production server, "
 "then make sure to request addon domain."
 msgstr "如果您在測試/生產伺服器上使用相同的購買代碼，請確保請求外掛程式域。"
 
@@ -3000,7 +3000,7 @@ msgid "Invalid msg91 sender id!"
 msgstr "消息 91 發件者 ID 無效！"
 
 #: admin\settings.php:539
-msgid "Invalid Purchase Code"
+msgid "Invalid License Key"
 msgstr "無效的購買代碼"
 
 #: admin\settings.php:540
@@ -3106,7 +3106,7 @@ msgstr "外掛程式"
 #: dig_addons\addons.php:204
 #: dig_addons\addons.php:222
 #: dig_addons\addons.php:247
-msgid "Please enter a valid Purchase Code."
+msgid "Please enter a valid License Key."
 msgstr "請輸入有效的購買代碼。"
 
 #: dig_addons\addons.php:236
@@ -5574,7 +5574,7 @@ msgid "Search"
 msgstr "搜索"
 
 #: includes\core\phandler.php:46
-msgid "Please enter a valid purchase code"
+msgid "Please enter a valid license key"
 msgstr "請輸入有效的購買代碼"
 
 #: includes\core\phandler.php:56
@@ -13989,7 +13989,7 @@ msgstr "可能的原因：您的主機可能已禁用mail（） 函數。"
 
 #: includes\wcs.php:267
 msgid ""
-"<b>Digits:</b> Please register digits with purchase code to enable automatic "
+"<b>Digits:</b> Please register digits with license key to enable automatic "
 "updates. Click <a href=\""
 msgstr "<b>數位：</b>請使用購買代碼註冊數位以啟用自動更新。點擊<一個href=”"
 

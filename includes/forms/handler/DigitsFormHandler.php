@@ -22,12 +22,15 @@ Handler::instance();
 final class Handler
 {
     const OTP_TABLE = 'digits_otp';
+    const WHATSAPP_VERIFY_KEY = 'whatsapp_verify_key';
     const EMAIL_VERIFY_KEY = 'email_auto_login';
     const EMAIL_VERIFY_PROCESS_KEY = 'email_auto_login_process';
     const REMOTE_DEVICE_AUTH_LOGIN = 'remote_device_auth_login';
     const REMOTE_DEVICE_AUTH_PENDING_STATUS = 'auth_pending';
+    public static $DIGITS_WA_RESPONSE_OBJ = false;
     protected static $_instance = null;
     public $request_user_login = [];
+    public $is_digits_whatsapp = false;
     private $type;
     private $data;
     private $login_details;
@@ -46,6 +49,11 @@ final class Handler
         add_action('wp_login', array($this, 'user_login'), 10, 2);
         add_action('authenticate', array($this, 'authenticate'), 100, 3);
 
+    }
+
+    public static function set_whatsapp_response_obj($response)
+    {
+        self::$DIGITS_WA_RESPONSE_OBJ = $response;
     }
 
     public function login_error_message($user, $username, $password)
@@ -508,6 +516,7 @@ final class Handler
      */
     public function check_remote_approve_status($method)
     {
+        $response = [];
         $immediate_methods = Processor::instance()->get_immediate_methods();
         $remote_approve_methods = ['email_otp', 'platform-all', 'platform'];
 
@@ -515,7 +524,22 @@ final class Handler
             $remote_approve_methods = array_merge($remote_approve_methods, $immediate_methods);
         }
 
-        if ($method == 'email_otp' || in_array($method, $immediate_methods)) {
+        if ($method == 'whatsapp_otp') {
+            $identifier_id = $this->get('wa_otp_token_key', true);
+
+            $check_whatsapp = \DigitsSessions::get_from_key_identifier(self::WHATSAPP_VERIFY_KEY, $identifier_id);
+            if (empty($check_whatsapp)) {
+                wp_send_json_error(['error' => __('Error, please try again!', 'digits')]);
+            }
+            $check_whatsapp = json_decode($check_whatsapp, true);
+            if ($check_whatsapp['status'] == 'approved') {
+                $response['wa_verification_code'] = $check_whatsapp['otp'];
+                $response['status'] = 'completed';
+                wp_send_json_success($response);
+            } else {
+                wp_send_json_success(['status' => 'pending']);
+            }
+        } else if ($method == 'email_otp' || in_array($method, $immediate_methods)) {
             $identifier_id = $this->get('otp_token_key', true);
             $check_email = \DigitsSessions::get_from_key_identifier(self::EMAIL_VERIFY_KEY, $identifier_id);
             if (empty($check_email)) {
@@ -722,8 +746,15 @@ final class Handler
     public function process_otp_request($user_id, $details, $action, $step_no, $request_type)
     {
         $send_otp = $this->send_otp($action, $details, $step_no, $request_type);
+
         ob_start();
-        Processor::instance()->render_otp_box($user_id, $action, $step_no, $request_type);
+
+        if ($this->is_digits_whatsapp) {
+            $this->render_whatsapp_send_message_box($user_id, $action, $step_no, $request_type);
+        } else {
+            Processor::instance()->render_otp_box($user_id, $action, $step_no, $request_type);
+        }
+
         $html = ob_get_clean();
 
 
@@ -837,7 +868,7 @@ final class Handler
         }
         $otp_target = $additional_data['otp_target'];
 
-        if (!empty($otp_target)) {
+        if (!empty($otp_target) && !$this->is_digits_whatsapp) {
             $response['input_info_html'] = Processor::instance()->code_hint_box($otp_target, $this->request_user_login);
         }
 
@@ -894,10 +925,21 @@ final class Handler
                 $data['countrycode'] = str_replace("+", "", $country_code_str);
                 $data['phone'] = $phone_str;
 
+
+                $is_digits_whatsapp = digits_is_official_whatsapp_enabled();
+                if ($is_digits_whatsapp) {
+                    $link_data = $this->create_whatsapp_token($step_no, $details['user'], $country_code_str, $phone_str, $otp);
+                    $response['check_remote_status'] = true;
+                    $response['otp_token_key'] = $link_data['token'];
+                    $this->is_digits_whatsapp = true;
+                }
+
                 $send = $this->process_mobile_otp($details['phone'], $action, $otp);
                 if ($send === 'firebase') {
                     $response['firebase'] = true;
                 }
+
+
                 $additional_data['otp_target'][] = $country_code_str . $phone_str;
                 break;
             case 'email_otp':
@@ -955,6 +997,36 @@ final class Handler
         }
 
         return true;
+    }
+
+    public function create_whatsapp_token($step_no, $user, $country_code, $phone, $otp)
+    {
+        $token = self::generate_token(32);
+        $identifier = self::generate_token(32);
+        $token_data = array('token' => $token, 'key' => $identifier);
+        $token_data['country_code'] = $country_code;
+        $token_data['phone'] = $phone;
+        $token_data['otp'] = $otp;
+        $token_data['digits'] = !empty($this->data['digits']);
+        $token_data['time'] = time();
+        $token_data['device'] = wp_unslash($_SERVER['HTTP_USER_AGENT']);
+        $token_data['step_no'] = $step_no;
+        $token_data['status'] = 'pending';
+        $token_data['user_ip'] = digits_get_ip();
+        if (!empty($user) && $user instanceof WP_User) {
+            $token_data['user_id'] = $user->ID;
+        }
+
+        if (!empty($this->data['container'])) {
+            $container = $this->data['container'];
+            $token_data['form_id'] = $container;
+        } else {
+            $args['login'] = 'true';
+            $token_data['form_id'] = false;
+        }
+
+        \DigitsSessions::update(self::WHATSAPP_VERIFY_KEY, $token_data, 3600, $identifier);
+        return ['token' => $identifier];
     }
 
     public function create_auto_login_link($user, $email, $otp, $step_no)
@@ -1054,6 +1126,73 @@ final class Handler
         return max(20, $time);
     }
 
+    public function render_whatsapp_send_message_box($user_id, $action, $step_no, $request_type)
+    {
+
+        $inp_wrapper_class = 'digits_auto_check';
+        $otp_field_name_step_no = 'otp_step_' . $step_no;
+
+
+        if (!self::$DIGITS_WA_RESPONSE_OBJ) {
+            ?>
+            <div class="digits_secure_login_auth_wrapper" data-change="wa_otp_token_verify_status">
+                <?php echo esc_attr('Error, Please try again later!'); ?>
+            </div>
+            <?php
+            return;
+        }
+        $wa_data = self::$DIGITS_WA_RESPONSE_OBJ;
+        $target_phone = $wa_data['target_phone'];
+        $taget_message = $wa_data['target_message'];
+
+        $filtered_target_phone = preg_replace('/\D/', '', $target_phone);
+
+        $whatsappLink = 'https://wa.me/' . $filtered_target_phone . '?text=' . urlencode($taget_message);
+
+        $hint_text = sprintf(__("Send <b>'%s'</b> to <b>%s</b> on WhatsApp", 'digits'), $taget_message, $target_phone);
+
+        ?>
+        <div class="digits_secure_login_auth_wrapper" data-change="wa_otp_token_verify_status">
+            <div class="digits-form_input digits-form_input_info <?php echo $inp_wrapper_class; ?>">
+                <div class="digits_secure_fingerprint_container">
+                    <div class="digits_secure_phone_qr_wrap">
+                        <div class="digits_secure_phone_qr_container">
+                            <div class="digits_secure_qr_code digits_phone_scanner digits_auto_check digits_open_link">
+                                <?php
+                                echo digits_create_qr($whatsappLink);
+                                ?>
+
+                                <input type="hidden" class="open_link" value="<?php echo esc_attr($whatsappLink); ?>"/>
+                            </div>
+                            <div class="digits_secure_qr_code_hint">
+                                <?php echo esc_attr(__('Scan the QR code with your phone', 'digits')); ?>
+                            </div>
+                            <input type="hidden"
+                                   name="<?php echo esc_attr($otp_field_name_step_no); ?>"
+                                   value="1"/>
+                            <input type="hidden"
+                                   class="wa_otp_token_verify_status"
+                                   name="wa_otp_token_verify_status"/>
+                            <input type="hidden"
+                                   class="wa_otp_token_key"
+                                   value="<?php echo esc_attr($wa_data['key']); ?>"
+                                   name="wa_otp_token_key"/>
+                            <input type="hidden"
+                                   class="whatsapp_otp_hidden_field"
+                                   value=""
+                                   name="whatsapp_otp"/>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" class="hide_submit">
+            </div>
+            <div class="digits-form_hint digits_text_align_center digits_open_link">
+                <?php echo $hint_text; ?>
+            </div>
+        </div>
+        <?php
+    }
+
     private function show_step_html($user, $step_no, $request_type)
     {
         ob_start();
@@ -1151,6 +1290,9 @@ final class Handler
             if ($verified) {
                 if ($is_immediate_otp || $type == 'email_otp') {
                     $this->delete_email_link();
+                }
+                if ($type == 'whatsapp_otp') {
+                    $this->delete_whatsapp_identifier();
                 }
             }
 
@@ -1341,6 +1483,11 @@ final class Handler
     }
 
     public function delete_email_link()
+    {
+        \DigitsSessions::delete(self::EMAIL_VERIFY_KEY);
+    }
+
+    public function delete_whatsapp_identifier()
     {
         \DigitsSessions::delete(self::EMAIL_VERIFY_KEY);
     }

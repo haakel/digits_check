@@ -264,7 +264,7 @@ function digits_show_reg_check_disabled($show_notice = true)
                 ?>
                 <div class="notice notice-error dig-new-activation-notice is-dismissible">
                     <p>
-                        <?php _e('<b>Digits:</b> Please register digits with purchase code to enable automatic updates. Click <a href="' . $request_link . '">here</a>.<br />'); ?>
+                        <?php _e('<b>Digits:</b> Please register digits with license key to enable automatic updates. Click <a href="' . $request_link . '">here</a>.<br />'); ?>
                     </p>
 
                     <form method="post">

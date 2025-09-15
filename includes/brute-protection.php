@@ -10,11 +10,13 @@ class DigitsBruteForceProtection
 {
 
     const TABLE_NAME = 'digits_failed_login_logs';
+    static $brute_force_allowed_ip = false;
     /**
      * The single instance of the class.
      * @var DigitsBruteForceProtection|null
      */
     private static $instance = null;
+    private static $digits_shield = -1;
     /**
      * Database table name for login attempts.
      * @var string
@@ -29,12 +31,12 @@ class DigitsBruteForceProtection
      * Maximum number of failed login attempts allowed.
      * @var int
      */
-    private $max_attempts = 10;
+    private $max_attempts = 20;
     /**
      * Time period (in seconds) to look back for failed attempts.
      * @var int
      */
-    private $lookback_period = 1800;
+    private $lookback_period = 2500;
     /**
      * Lockout duration (in seconds) after exceeding max attempts.
      * @var int
@@ -48,7 +50,7 @@ class DigitsBruteForceProtection
     {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->table_name = $this->wpdb->prefix . self::TABLE_NAME; // Use WordPress table prefix
+        $this->table_name = $this->wpdb->prefix . self::TABLE_NAME;
 
         add_action('digits_create_database', [$this, 'create_database']);
         $this->add_hooks();
@@ -352,13 +354,14 @@ class DigitsBruteForceProtection
      */
     public function check_lockout($user, $username, $password)
     {
+        if (self::disable_brute_force_protection()) {
+            return $user;
+        }
 
         $ip_address = digits_get_ip();
 
-        if (!empty($user)) {
-            $data['user_id'] = $user->ID;
-        }
         if (!empty($user) && $user instanceof WP_User) {
+            $data['user_id'] = $user->ID;
             $data['username'] = sanitize_user($user->user_login);
         } else {
             $data['username'] = !empty($username) ? $username : null;
@@ -387,6 +390,26 @@ class DigitsBruteForceProtection
         }
 
         return $user;
+    }
+
+    public static function disable_brute_force_protection()
+    {
+        if (self::$digits_shield == -1) {
+            self::$digits_shield = get_option('digits_shield', 1);
+        }
+
+        if (self::$digits_shield == 0) {
+            return true;
+        }
+
+        $ip = digits_get_ip();
+        if (!self::$brute_force_allowed_ip) {
+            self::$brute_force_allowed_ip = get_option("dig_brute_force_allowed_ip");
+        }
+        if (is_array(self::$brute_force_allowed_ip) && in_array($ip, self::$brute_force_allowed_ip)) {
+            return true;
+        }
+        return false;
     }
 
     public function create_database()
@@ -423,6 +446,10 @@ class DigitsBruteForceProtection
      */
     public function handle_failed_login($username)
     {
+        if (self::disable_brute_force_protection()) {
+            return;
+        }
+
         $ip_address = digits_get_ip();
         if (!$ip_address) {
             return; // Cannot track without IP
@@ -451,6 +478,10 @@ class DigitsBruteForceProtection
      */
     public function add_remaining_attempts_message($error, $username, $password)
     {
+        if (self::disable_brute_force_protection()) {
+            return $error;
+        }
+
         if (!$error instanceof WP_Error) {
             return $error;
         }

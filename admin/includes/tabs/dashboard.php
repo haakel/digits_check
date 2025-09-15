@@ -76,7 +76,7 @@ function digits_settings_dashboard()
             <div class="dig_admin_dashboard_buttons dig_admin_dashboard_buttons_row2">
                 <div class="dig_admin_dashboard_button digits_show_purchasecode">
                     <span class="dig_admin_dashboard_ic dig_admin_dashboard_purchase_code"></span>
-                    <?php esc_attr_e('Purchase Code', 'digits'); ?>
+                    <?php esc_attr_e('License Key', 'digits'); ?>
                 </div>
                 <a href="?page=digits_settings&tab=shortcodes" class="updatetabview" tab="shortcodestab">
                     <div class="dig_admin_dashboard_button">

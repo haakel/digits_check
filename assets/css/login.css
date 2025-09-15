@@ -2468,8 +2468,11 @@ html[dir="rtl"] .dig-custom-field .dig_opt_mult_con .dig_input_wrapper:before {
     margin-top: 16px;
     color: var(--dtitle);
     opacity: 0.8;
+    line-height: 1.5;
 }
-
+.digits_open_link{
+    cursor: pointer;
+}
 .digits-form_countrycode {
     position: absolute;
     left: 0;
@@ -3460,6 +3463,7 @@ html[dir="rtl"] .dig-custom-field .dig_opt_mult_con .dig_input_wrapper:before {
 
 #loginform .digits_password_eye {
     top: 8px;
+    bottom: unset;
 }
 
 .digits_password_eye {
@@ -3469,7 +3473,7 @@ html[dir="rtl"] .dig-custom-field .dig_opt_mult_con .dig_input_wrapper:before {
     display: flex;
     position: absolute;
     right: 14px;
-    top: 14px;
+    bottom: 14px;
     overflow: hidden;
     align-content: center;
     justify-content: center;
@@ -3535,4 +3539,18 @@ html[dir="rtl"] .digits_password_eye {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+.digits_text_align_center{
+    text-align: center;
+}
+
+
+.digits-form_login .digits-form_input input[type="tel"],
+.digits-form_login .digits-form_input input[type="email"],
+.digits-form_register .digits-form_input input[type="tel"],
+.digits-form_register .digits-form_input input[type="email"] {
+    height: 52px;
+}
+.digits_phone_holder .digit_cs-list.digits_scrollbar .dig-cc-search-container.search_field {
+    list-style: none;
 }

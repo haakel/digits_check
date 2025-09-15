@@ -124,6 +124,7 @@ function dig_country_list()
         'KZ' => 'Kazakhstan',
         'KE' => 'Kenya',
         'KI' => 'Kiribati',
+        'XK'=>'Kosovo',
         'KP' => 'North Korea',
         'KR' => 'South Korea',
         'KW' => 'Kuwait',

@@ -154,6 +154,7 @@ function getCountryList()
         "Kazakhstan" => "7",
         "Kenya" => "254",
         "Kiribati" => "686",
+        "Kosovo" => "383",
         "Kuwait" => "965",
         "Kyrgyzstan" => "996",
         "Laos" => "856",
@@ -396,6 +397,7 @@ function getTranslatedCountryName($countryName)
         "Kazakhstan" => "Kazakhstan",
         "Kenya" => "Kenya",
         "Kiribati" => "Kiribati",
+        "Kosovo" => "Kosovo",
         "Kuwait" => "Kuwait",
         "Kyrgyzstan" => "Kyrgyzstan",
         "Laos" => "Laos",
@@ -556,9 +558,9 @@ function getCountryCode($country)
     }
     $countryarray = getCountryList();
 
-    if(isset($countryarray[$country])){
-         return $countryarray[$country];
-     }
+    if (isset($countryarray[$country])) {
+        return $countryarray[$country];
+    }
 
     return '';
 
@@ -730,9 +732,16 @@ function dig_sanitize_phone_number($phone)
 
 function dig_isWhatsAppEnabled()
 {
-    $whatsapp_gateway = get_option('digit_whatsapp_gateway', -1);
+    $whatsapp_gateway = get_option('digit_whatsapp_gateway', digits_default_whatsapp_gateway());
 
     return $whatsapp_gateway == -1 ? false : true;
+}
+
+function digits_is_official_whatsapp_enabled()
+{
+    return false;
+    $whatsapp_gateway = get_option('digit_whatsapp_gateway', digits_default_whatsapp_gateway());
+    return $whatsapp_gateway == 1111;
 }
 
 function dig_securityKeysEnabled()

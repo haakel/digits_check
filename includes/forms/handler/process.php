@@ -221,7 +221,7 @@ final class Processor
         $immediately_methods = [];
         $is_immediately = false;
 
-        if ($step_no == 1) {
+        if ($step_no == 1 && $request_type == 'login') {
             $immediately_methods = $this->get_immediate_methods();
 
             $diff = array_diff($methods, $immediately_methods);
@@ -243,13 +243,16 @@ final class Processor
             $hide_submit_button = false;
         }
 
+
+        $digits_is_official_whatsapp_enabled = digits_is_official_whatsapp_enabled();
+
         foreach ($methods as $method) {
 
             if (!isset($labels[$method])) {
                 continue;
             }
 
-            if ($method == '2fa_app') {
+            if ($method == '2fa_app' || ($digits_is_official_whatsapp_enabled && $method == 'whatsapp_otp')) {
                 $text = __('<span>Use</span> %s', 'digits');
             } else {
                 $text = __("<span>Send Passcode on</span> %s", 'digits');
@@ -623,6 +626,16 @@ final class Processor
                        class="new_password"
                        autocomplete="new-password"
                        placeholder="<?php esc_attr_e('New Password', 'digits'); ?>"/>
+            </div>
+            <div class="digits_password_eye-cont digits_password_eye">
+                <svg class="digits_password_eye-open digit-eye" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <div class="digits_password_eye-open digits_password_eye-line digits_password_eye-default-line"></div>
             </div>
         </div>
         <?php

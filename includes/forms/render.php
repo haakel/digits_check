@@ -165,6 +165,12 @@ function digits_render_new_form($details)
         }
         $details['page_type'] = $type;
     }
+
+    $dig_cust_forms = apply_filters('dig_hide_forms', 0);
+
+    if ($dig_cust_forms === 1) {
+        $details['use_custom_form'] = true;
+    }
     ?>
     <div class="digits-form_container digits">
         <div class="digits-form_wrapper digits_modal_box digits2_box">
@@ -345,7 +351,7 @@ function digits_render_forgot_form($details)
                                             <input
                                                     name="digits_email"
                                                     type="email"
-                                                    autocomplete="email"
+                                                    autocomplete="username"
                                                     placeholder="<?php echo esc_attr($email_label); ?>"
                                                     required
                                             />
@@ -513,7 +519,7 @@ function digits_render_login_form($details)
                                             <input
                                                     name="digits_email"
                                                     type="email"
-                                                    autocomplete="email"
+                                                    autocomplete="username"
                                                     placeholder="<?php echo esc_attr($email_label); ?>"
                                                     required
                                             />

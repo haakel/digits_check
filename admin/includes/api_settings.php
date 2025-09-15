@@ -62,14 +62,14 @@ function digits_admin_show_notices()
     if (!isset($_REQUEST['resume_configuration_wizard'])) {
         if (!wp_is_mobile()) {
             $resume_configuration_wiz = get_site_option('dig_resume_configuration_wizard', 0);
-
+            // fix by melipayamak
             if ($resume_configuration_wiz == 1) {
                 $request_link = esc_attr(admin_url('admin.php?page=digits_settings&tab=dashboard&resume_configuration_wizard=1'));
                 $notice_links = [
                     ['label' => __('Resume', 'digits'), 'url' => $request_link],
                 ];
-                $notice_text = __('You left your Digits plugin configuration in the middle, resume it to setup the plugin.', 'digits');
-                digits_show_notice($notice_text, $notice_links, 'del_dig_resume_configuration_wizard');
+                // $notice_text = __('You left your Digits plugin configuration in the middle, resume it to setup the plugin.', 'digits');
+                // digits_show_notice($notice_text, $notice_links, 'del_dig_resume_configuration_wizard');
             }
         }
     }
@@ -650,25 +650,25 @@ function getGateWayArray()
         //         )
         // ),
 
-        'SMSC.ru' => array(
-            'value' => 21,
-            'inputs' =>
-                array(
-                    __('Login') => array('text' => true, 'name' => 'login'),
-                    __('Password') => array('text' => true, 'name' => 'password'),
-                    __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
-                )
-        ),
-        'TargetSMS' => array(
-            'value' => 22,
-            'require_addon' => 1,
-            'inputs' =>
-                array(
-                    __('Login') => array('text' => true, 'name' => 'login'),
-                    __('Password') => array('text' => true, 'name' => 'password'),
-                    __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
-                )
-        ),
+        // 'SMSC.ru' => array(
+        //     'value' => 21,
+        //     'inputs' =>
+        //         array(
+        //             __('Login') => array('text' => true, 'name' => 'login'),
+        //             __('Password') => array('text' => true, 'name' => 'password'),
+        //             __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
+        //         )
+        // ),
+        // 'TargetSMS' => array(
+        //     'value' => 22,
+        //     'require_addon' => 1,
+        //     'inputs' =>
+        //         array(
+        //             __('Login') => array('text' => true, 'name' => 'login'),
+        //             __('Password') => array('text' => true, 'name' => 'password'),
+        //             __('Sender') => array('text' => true, 'name' => 'sender', 'optional' => 1)
+        //         )
+        // ),
 
         // 'Ghasedak' => array(
         //     'value' => 23,
@@ -946,7 +946,7 @@ function digits_api_settings()
 
     <div class="dig_admin_tab_grid_elem dig_admin_tab_grid_sec">
         <?php
-            $text = __('For SMS gateways besides Firebase, we recommend testing your gateway beforehand to avoid confusion and ensure successful message delivery.', 'digits');
+            $text = __('برای استفاده از ارسال بین الملل ابتدا به پشتیبانی ملی پیامک اطلاع داده و درخواست خط بین الملل کنید سپس گزینه ارسال بین الملل را فعال و تنظیم بفرمایید.', 'digits');
             digits_settings_show_hint($text);
             ?>
 

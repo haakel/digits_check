@@ -2437,8 +2437,10 @@ ul li input[type=checkbox] {
     padding: 0 20px 0 28px;
 }
 
+/*add by melipayamak*/
 .dig-tab_dashboard {
-    background-color: rgba(125, 57, 255, 0.06);
+  background-color: rgba(125, 57, 255, 0.06);
+  display: -webkit-box;
 }
 
 .dig-tab_dashboard .dig-nav-tab {
@@ -3322,23 +3324,24 @@ button.digits_addon_btn {
 }
 
 
+/*add by melipayamak*/
 .digits-setting_save_indicator {
-    background: rgba(31, 52, 72, 0.05);
-    border-radius: 8px;
-    z-index: 101;
-    height: 40px;
-    cursor: default;
-    transition: all .15s;
-    transition-timing-function: ease;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    gap: 8px;
-    right: 68px;
-    bottom: 28px;
-    position: fixed;
-    box-sizing: border-box;
-    overflow: hidden;
+  background: rgba(31, 52, 72, 0.05);
+  border-radius: 8px;
+  z-index: 101;
+  height: 40px;
+  cursor: default;
+  transition: all .15s;
+  transition-timing-function: ease;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  left: 20px; /* فاصله از چپ */
+  bottom: 28px; /* فاصله از پایین */
+  position: fixed;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .digits-setting_save_indicator_text {

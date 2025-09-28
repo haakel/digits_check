@@ -3,7 +3,7 @@
 /*
  * Plugin Name: DIGITS: WordPress Mobile Number Signup and Login
  * Description: Expand your website dimensions by providing signup and login using mobile number. User can register themselves with just a mobile number.
- * Version: 8.6.3
+ * Version: 8.6.3.1
  * Plugin URI: https://www.melipayamak.com/lab/digits-plugin
  * Author URI: https://www.melipayamak.com
  * Author: ملی پیامک

@@ -12,8 +12,6 @@ if (!class_exists('Melipayamak\MelipayamakApi')) {
     require_once plugin_dir_path(__DIR__) . 'gateways/melipayamak/autoload.php';
 }
 
-require_once plugin_dir_path(__DIR__) . 'Twilio/autoload.php';
-
 
 use Melipayamak\MelipayamakApi;
 use Twilio\Rest\Client;

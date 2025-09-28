@@ -583,7 +583,7 @@ function digits_wp_wc_redirect_logout_uri($logout_url, $redirect)
 {
     $custom_logout_url = get_option("digits_logoutred");
 
-    if (!empty($custom_logout_url)) {
+    if (!empty($custom_logout_url) && isset($_SERVER['HTTP_HOST'])) {
 
         $new_url = "//" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 

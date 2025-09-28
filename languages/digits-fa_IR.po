@@ -252,7 +252,7 @@ msgstr "ثبت نام"
 
 #: admin/includes/api_settings.php:39
 msgid "Buy Now"
-msgstr "هم اکنون خریداری کنید"
+msgstr "خرید"
 
 #: admin/includes/api_settings.php:41
 #, fuzzy
@@ -282,7 +282,7 @@ msgstr ""
 
 #: admin/includes/api_settings.php:68
 msgid "Resume"
-msgstr "از سرگیری"
+msgstr "رزومه"
 
 #: admin/includes/api_settings.php:70
 msgid ""

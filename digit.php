@@ -3,7 +3,7 @@
 /*
  * Plugin Name: DIGITS: WordPress Mobile Number Signup and Login
  * Description: Expand your website dimensions by providing signup and login using mobile number. User can register themselves with just a mobile number.
- * Version: 8.6.3
+ * Version: 8.6.3.1
  * Plugin URI: https://www.melipayamak.com/lab/digits-plugin
  * Author URI: https://www.melipayamak.com
  * Author: ملی پیامک
@@ -22,15 +22,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function digits_version()
+{
+    return '8.6.3.1';
+}
+
 update_site_option('dig_purchasecode', 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX');
 update_site_option('dig_license_type', 1);
 delete_site_option('dig_dsb');
 delete_site_option('dig_purchasefail');
-
-function digits_version()
-{
-    return '8.6.3';
-}
 
 
 global $dig_logingpage, $dig_save_details;
@@ -999,6 +999,9 @@ function digits_activate()
         wp_die($version_required);
     }
 
+    if (!extension_loaded('gmp') && !extension_loaded('bcmath')) {
+        wp_die(__('<div><p><b>Fatal Error</b>: Digits requires GMP or BCMath to work correctly. </p></div>', 'digits'));
+    }
 
     if (!function_exists('curl_version')) {
         wp_die(__('<div><p><b>Fatal Error</b>: Digits requires curl to work correctly. </p></div>', 'digits'));
@@ -1635,20 +1638,15 @@ function dig_update_custom_field_data($user_id, $meta_key, $value)
     update_user_meta($user_id, $meta_key, $value);
 }
 
-/*
- * todo: remove checking & retrieving value from label after version 8
- * */
+
 function dig_get_custom_field_data($user_id, $meta_key, $label = null, $single = true)
 {
 
 
     $value = get_user_meta($user_id, $meta_key, true);
-
-    if ($value == null && $label != null) {
-        $value = get_user_meta($user_id, $label, true);
-        update_user_meta($user_id, $meta_key, $value);
+    if(is_array($value)){
+        return $value;
     }
-
     return esc_attr(esc_html($value));
 }
 
@@ -2159,7 +2157,7 @@ function dig_show_fields($reg_custom_fields, $show_asterisk, $login_page = 1, $b
             id="digits_reg_<?php echo $meta_key . $rand; ?>" <?php echo $custom_class; ?> <?php if ($values['required'] == 1) {
                     echo "required";
                 } ?> placeholder="<?php echo esc_attr($placeholder);?>" rows="2"><?php if ($e_value) {
-                        echo $e_value;
+                        echo esc_html($e_value);
                     } ?></textarea>
     </div>
     <?php
@@ -2345,7 +2343,7 @@ function dig_show_fields($reg_custom_fields, $show_asterisk, $login_page = 1, $b
             <?php echo $custom_class; ?> <?php if ($values['required'] == 1) {
                     echo "required";
                 } ?> value="<?php if ($e_value) {
-                           echo $e_value;
+                           echo esc_attr($e_value);
                        } ?>" />
     </div>
     <?php

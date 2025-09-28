@@ -688,7 +688,6 @@ function submit_form($this, silent, success_function, error_function) {
 
     return false;
 };
-
     function update_manage_license_link() {
         var code_inp = digits_setting_update.find("#dig_purchasecode");
         if(code_inp.length) {

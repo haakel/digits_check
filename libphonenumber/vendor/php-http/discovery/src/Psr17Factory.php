@@ -49,12 +49,12 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
     private $uriFactory;
 
     public function __construct(
-        RequestFactoryInterface $requestFactory = null,
-        ResponseFactoryInterface $responseFactory = null,
-        ServerRequestFactoryInterface $serverRequestFactory = null,
-        StreamFactoryInterface $streamFactory = null,
-        UploadedFileFactoryInterface $uploadedFileFactory = null,
-        UriFactoryInterface $uriFactory = null
+        ?RequestFactoryInterface $requestFactory = null,
+        ?ResponseFactoryInterface $responseFactory = null,
+        ?ServerRequestFactoryInterface $serverRequestFactory = null,
+        ?StreamFactoryInterface $streamFactory = null,
+        ?UploadedFileFactoryInterface $uploadedFileFactory = null,
+        ?UriFactoryInterface $uriFactory = null
     ) {
         $this->requestFactory = $requestFactory;
         $this->responseFactory = $responseFactory;
@@ -69,6 +69,88 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
         $this->setFactory($streamFactory);
         $this->setFactory($uploadedFileFactory);
         $this->setFactory($uriFactory);
+    }
+
+    /**
+     * @param UriInterface|string $uri
+     */
+    public function createRequest(string $method, $uri): RequestInterface
+    {
+        $factory = $this->requestFactory ?? $this->setFactory(Psr17FactoryDiscovery::findRequestFactory());
+
+        return $factory->createRequest(...\func_get_args());
+    }
+
+    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+    {
+        $factory = $this->responseFactory ?? $this->setFactory(Psr17FactoryDiscovery::findResponseFactory());
+
+        return $factory->createResponse(...\func_get_args());
+    }
+
+    /**
+     * @param UriInterface|string $uri
+     */
+    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    {
+        $factory = $this->serverRequestFactory ?? $this->setFactory(Psr17FactoryDiscovery::findServerRequestFactory());
+
+        return $factory->createServerRequest(...\func_get_args());
+    }
+
+    public function createServerRequestFromGlobals(?array $server = null, ?array $get = null, ?array $post = null, ?array $cookie = null, ?array $files = null, ?StreamInterface $body = null): ServerRequestInterface
+    {
+        $server = $server ?? $_SERVER;
+        $request = $this->createServerRequest($server['REQUEST_METHOD'] ?? 'GET', $this->createUriFromGlobals($server), $server);
+
+        return $this->buildServerRequestFromGlobals($request, $server, $files ?? $_FILES)
+            ->withQueryParams($get ?? $_GET)
+            ->withParsedBody($post ?? $_POST)
+            ->withCookieParams($cookie ?? $_COOKIE)
+            ->withBody($body ?? $this->createStreamFromFile('php://input', 'r+'));
+    }
+
+    public function createStream(string $content = ''): StreamInterface
+    {
+        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
+
+        return $factory->createStream($content);
+    }
+
+    public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
+    {
+        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
+
+        return $factory->createStreamFromFile($filename, $mode);
+    }
+
+    /**
+     * @param resource $resource
+     */
+    public function createStreamFromResource($resource): StreamInterface
+    {
+        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
+
+        return $factory->createStreamFromResource($resource);
+    }
+
+    public function createUploadedFile(StreamInterface $stream, ?int $size = null, int $error = \UPLOAD_ERR_OK, ?string $clientFilename = null, ?string $clientMediaType = null): UploadedFileInterface
+    {
+        $factory = $this->uploadedFileFactory ?? $this->setFactory(Psr17FactoryDiscovery::findUploadedFileFactory());
+
+        return $factory->createUploadedFile(...\func_get_args());
+    }
+
+    public function createUri(string $uri = ''): UriInterface
+    {
+        $factory = $this->uriFactory ?? $this->setFactory(Psr17FactoryDiscovery::findUriFactory());
+
+        return $factory->createUri(...\func_get_args());
+    }
+
+    public function createUriFromGlobals(?array $server = null): UriInterface
+    {
+        return $this->buildUriFromGlobals($this->createUri(''), $server ?? $_SERVER);
     }
 
     private function setFactory($factory)
@@ -93,96 +175,6 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
         }
 
         return $factory;
-    }
-
-    /**
-     * @param UriInterface|string $uri
-     */
-    public function createRequest(string $method, $uri): RequestInterface
-    {
-        $factory = $this->requestFactory ?? $this->setFactory(Psr17FactoryDiscovery::findRequestFactory());
-
-        return $factory->createRequest(...\func_get_args());
-    }
-
-    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
-    {
-        $factory = $this->responseFactory ?? $this->setFactory(Psr17FactoryDiscovery::findResponseFactory());
-
-        return $factory->createResponse(...\func_get_args());
-    }
-
-    public function createServerRequestFromGlobals(array $server = null, array $get = null, array $post = null, array $cookie = null, array $files = null, StreamInterface $body = null): ServerRequestInterface
-    {
-        $server = $server ?? $_SERVER;
-        $request = $this->createServerRequest($server['REQUEST_METHOD'] ?? 'GET', $this->createUriFromGlobals($server), $server);
-
-        return $this->buildServerRequestFromGlobals($request, $server, $files ?? $_FILES)
-            ->withQueryParams($get ?? $_GET)
-            ->withParsedBody($post ?? $_POST)
-            ->withCookieParams($cookie ?? $_COOKIE)
-            ->withBody($body ?? $this->createStreamFromFile('php://input', 'r+'));
-    }
-
-    /**
-     * @param UriInterface|string $uri
-     */
-    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
-    {
-        $factory = $this->serverRequestFactory ?? $this->setFactory(Psr17FactoryDiscovery::findServerRequestFactory());
-
-        return $factory->createServerRequest(...\func_get_args());
-    }
-
-    public function createUriFromGlobals(array $server = null): UriInterface
-    {
-        return $this->buildUriFromGlobals($this->createUri(''), $server ?? $_SERVER);
-    }
-
-    private function buildUriFromGlobals(UriInterface $uri, array $server): UriInterface
-    {
-        $uri = $uri->withScheme(!empty($server['HTTPS']) && 'off' !== strtolower($server['HTTPS']) ? 'https' : 'http');
-
-        $hasPort = false;
-        if (isset($server['HTTP_HOST'])) {
-            $parts = parse_url('http://'.$server['HTTP_HOST']);
-
-            $uri = $uri->withHost($parts['host'] ?? 'localhost');
-
-            if ($parts['port'] ?? false) {
-                $hasPort = true;
-                $uri = $uri->withPort($parts['port']);
-            }
-        } else {
-            $uri = $uri->withHost($server['SERVER_NAME'] ?? $server['SERVER_ADDR'] ?? 'localhost');
-        }
-
-        if (!$hasPort && isset($server['SERVER_PORT'])) {
-            $uri = $uri->withPort($server['SERVER_PORT']);
-        }
-
-        $hasQuery = false;
-        if (isset($server['REQUEST_URI'])) {
-            $requestUriParts = explode('?', $server['REQUEST_URI'], 2);
-            $uri = $uri->withPath($requestUriParts[0]);
-            if (isset($requestUriParts[1])) {
-                $hasQuery = true;
-                $uri = $uri->withQuery($requestUriParts[1]);
-            }
-        }
-
-        if (!$hasQuery && isset($server['QUERY_STRING'])) {
-            $uri = $uri->withQuery($server['QUERY_STRING']);
-        }
-
-        return $uri;
-    }
-
-    public function createUri(string $uri = ''): UriInterface
-    {
-        $factory = $this->uriFactory ?? $this->setFactory(Psr17FactoryDiscovery::findUriFactory());
-
-        return $factory->createUri(...\func_get_args());
     }
 
     private function buildServerRequestFromGlobals(ServerRequestInterface $request, array $server, array $files): ServerRequestInterface
@@ -222,6 +214,45 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
         }
 
         return $request;
+    }
+
+    private function buildUriFromGlobals(UriInterface $uri, array $server): UriInterface
+    {
+        $uri = $uri->withScheme(!empty($server['HTTPS']) && 'off' !== strtolower($server['HTTPS']) ? 'https' : 'http');
+
+        $hasPort = false;
+        if (isset($server['HTTP_HOST'])) {
+            $parts = parse_url('http://'.$server['HTTP_HOST']);
+
+            $uri = $uri->withHost($parts['host'] ?? 'localhost');
+
+            if ($parts['port'] ?? false) {
+                $hasPort = true;
+                $uri = $uri->withPort($parts['port']);
+            }
+        } else {
+            $uri = $uri->withHost($server['SERVER_NAME'] ?? $server['SERVER_ADDR'] ?? 'localhost');
+        }
+
+        if (!$hasPort && isset($server['SERVER_PORT'])) {
+            $uri = $uri->withPort($server['SERVER_PORT']);
+        }
+
+        $hasQuery = false;
+        if (isset($server['REQUEST_URI'])) {
+            $requestUriParts = explode('?', $server['REQUEST_URI'], 2);
+            $uri = $uri->withPath($requestUriParts[0]);
+            if (isset($requestUriParts[1])) {
+                $hasQuery = true;
+                $uri = $uri->withQuery($requestUriParts[1]);
+            }
+        }
+
+        if (!$hasQuery && isset($server['QUERY_STRING'])) {
+            $uri = $uri->withQuery($server['QUERY_STRING']);
+        }
+
+        return $uri;
     }
 
     private function normalizeFiles(array $files): array
@@ -268,36 +299,5 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
         }
 
         return $tmpName;
-    }
-
-    public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
-    {
-        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
-
-        return $factory->createStreamFromFile($filename, $mode);
-    }
-
-    public function createStream(string $content = ''): StreamInterface
-    {
-        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
-
-        return $factory->createStream($content);
-    }
-
-    public function createUploadedFile(StreamInterface $stream, int $size = null, int $error = \UPLOAD_ERR_OK, string $clientFilename = null, string $clientMediaType = null): UploadedFileInterface
-    {
-        $factory = $this->uploadedFileFactory ?? $this->setFactory(Psr17FactoryDiscovery::findUploadedFileFactory());
-
-        return $factory->createUploadedFile(...\func_get_args());
-    }
-
-    /**
-     * @param resource $resource
-     */
-    public function createStreamFromResource($resource): StreamInterface
-    {
-        $factory = $this->streamFactory ?? $this->setFactory(Psr17FactoryDiscovery::findStreamFactory());
-
-        return $factory->createStreamFromResource($resource);
     }
 }

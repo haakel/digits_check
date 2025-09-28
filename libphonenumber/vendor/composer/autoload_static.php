@@ -133,6 +133,10 @@ class ComposerStaticInit05731bcdbaa91c6c0f54e63ffa3e71af
         array (
             'Unitedover\\Digits\\' => 18,
         ),
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -247,6 +251,10 @@ class ComposerStaticInit05731bcdbaa91c6c0f54e63ffa3e71af
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -323,8 +331,8 @@ class ComposerStaticInit05731bcdbaa91c6c0f54e63ffa3e71af
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (

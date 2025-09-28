@@ -366,39 +366,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return $missingRequires;
     }
 
-    private function updateComposerJson(array $missingRequires, bool $sortPackages)
-    {
-        $file = Factory::getComposerFile();
-        $contents = file_get_contents($file);
-
-        $manipulator = new JsonManipulator($contents);
-
-        foreach ($missingRequires as $key => $packages) {
-            foreach ($packages as $package => $constraint) {
-                if ('remove' === $key) {
-                    $manipulator->removeSubNode('require-dev', $package);
-                } else {
-                    $manipulator->addLink($key, $package, $constraint, $sortPackages);
-                }
-            }
-        }
-
-        file_put_contents($file, $manipulator->getContents());
-    }
-
-    private function updateComposerLock(Composer $composer, IOInterface $io)
-    {
-        $lock = substr(Factory::getComposerFile(), 0, -4).'lock';
-        $composerJson = file_get_contents(Factory::getComposerFile());
-        $lockFile = new JsonFile($lock, null, $io);
-        $locker = ClassDiscovery::safeClassExists(RepositorySet::class)
-            ? new Locker($io, $lockFile, $composer->getInstallationManager(), $composerJson)
-            : new Locker($io, $lockFile, $composer->getRepositoryManager(), $composer->getInstallationManager(), $composerJson);
-        $lockData = $locker->getLockData();
-        $lockData['content-hash'] = Locker::getContentHash($composerJson);
-        $lockFile->write($lockData);
-    }
-
     public function preAutoloadDump(Event $event)
     {
         $filesystem = new Filesystem();
@@ -461,5 +428,47 @@ EOPHP
         $autoload = $rootPackage->getAutoload();
         $autoload['classmap'][] = $vendorDir.'/composer/GeneratedDiscoveryStrategy.php';
         $rootPackage->setAutoload($autoload);
+    }
+
+    private function updateComposerJson(array $missingRequires, bool $sortPackages)
+    {
+        $file = Factory::getComposerFile();
+        $contents = file_get_contents($file);
+
+        $manipulator = new JsonManipulator($contents);
+
+        foreach ($missingRequires as $key => $packages) {
+            foreach ($packages as $package => $constraint) {
+                if ('remove' === $key) {
+                    $manipulator->removeSubNode('require-dev', $package);
+                } else {
+                    $manipulator->addLink($key, $package, $constraint, $sortPackages);
+                }
+            }
+        }
+
+        file_put_contents($file, $manipulator->getContents());
+    }
+
+    private function updateComposerLock(Composer $composer, IOInterface $io)
+    {
+        if (false === $composer->getConfig()->get('lock')) {
+            return;
+        }
+
+        $lock = substr(Factory::getComposerFile(), 0, -4).'lock';
+        $composerJson = file_get_contents(Factory::getComposerFile());
+        $lockFile = new JsonFile($lock, null, $io);
+        $locker = ClassDiscovery::safeClassExists(RepositorySet::class)
+            ? new Locker($io, $lockFile, $composer->getInstallationManager(), $composerJson)
+            : new Locker($io, $lockFile, $composer->getRepositoryManager(), $composer->getInstallationManager(), $composerJson);
+
+        if (!$locker->isLocked()) {
+            return;
+        }
+
+        $lockData = $locker->getLockData();
+        $lockData['content-hash'] = Locker::getContentHash($composerJson);
+        $lockFile->write($lockData);
     }
 }
